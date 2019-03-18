@@ -4,6 +4,7 @@ import message.MessageSenderReceiver;
 import protocol.Protocol;
 import protocol.chat.subprotocol.NormalSubChatProtocol;
 import protocol.system.subprotocol.LoginSubSystemProtocol;
+import protocol.system.subprotocol.LogoutSubSystemProtocol;
 
 import java.net.Socket;
 
@@ -43,6 +44,11 @@ public class User extends Thread {
         Protocol protocol = new LoginSubSystemProtocol()
                                 .setUserId(id)
                                 .setPassword(password);
+        this.messageSenderReceiver.sendMessage(protocol);
+    }
+
+    public void logout() {
+        Protocol protocol = new LogoutSubSystemProtocol().setUserId(this.userId);
         this.messageSenderReceiver.sendMessage(protocol);
     }
 

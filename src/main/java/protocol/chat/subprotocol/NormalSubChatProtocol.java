@@ -1,11 +1,7 @@
 package protocol.chat.subprotocol;
 
 import client.frame.GameFrame;
-import exception.game.gui.MessageAppendToPanelFailure;
 import protocol.chat.ChatProtocol;
-
-import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledDocument;
 
 public class NormalSubChatProtocol extends ChatProtocol {
     private String message;
@@ -32,12 +28,6 @@ public class NormalSubChatProtocol extends ChatProtocol {
     @Override
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
-        StyledDocument document = (StyledDocument) GameFrame.getInstance().getTextPane().getDocument();
-        try {
-            document.insertString(document.getLength(), this.sender + " : " + this.message, null);
-        } catch (BadLocationException e) {
-            e.printStackTrace();
-            throw new MessageAppendToPanelFailure("Message Append to Panel Failed");
-        }
+        GameFrame.getInstance().appendMessageToTextPane(sender + " : " + message);
     }
 }

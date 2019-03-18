@@ -1,17 +1,22 @@
 package client.frame;
 
+import exception.game.gui.MessageAppendToPanelFailure;
 import game.User;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class GameFrame extends JFrame {
     private static GameFrame gameFrame = new GameFrame();
 
-    private JPanel contentPane;
+    private JPanel mainPanel;
 
     /** 채팅창 **/
     private JTextField inputChatTextField; // 보낼 메세지 쓰는곳
@@ -23,6 +28,7 @@ public class GameFrame extends JFrame {
 
 
     private GameFrame() {
+        mainPanel = new JPanel();
         textPane = new JTextPane();
         scrollPane = new JScrollPane();
         inputChatTextField = new JTextField();
@@ -35,81 +41,101 @@ public class GameFrame extends JFrame {
         return gameFrame;
     }
 
-    public JTextPane getTextPane() {
-        return this.textPane;
+    public void appendMessageToTextPane(String message) {
+        StyledDocument document = (StyledDocument) this.textPane.getDocument();
+        try {
+            document.insertString(document.getLength(), message + "\n", null);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+            throw new MessageAppendToPanelFailure("Message Append to Panel Failed");
+        }
     }
 
     public void boot() {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(200, 100, 1000, 620);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        contentPane.setBackground(Color.BLACK);
-        contentPane.setLayout(null);
-        setContentPane(contentPane);
+
+        mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        mainPanel.setBackground(Color.BLACK);
+        mainPanel.setLayout(null);
+        setContentPane(mainPanel);
 
         textPane.setBackground(Color.WHITE);
         textPane.setEditable(false);
 
         scrollPane.setBounds(696, 30, 280, 490);
         scrollPane.setViewportView(textPane);
-        contentPane.add(scrollPane);
+        mainPanel.add(scrollPane);
 
         inputChatTextField.setBounds(696, 532, 210, 32);
-        contentPane.add(inputChatTextField);
+        mainPanel.add(inputChatTextField);
 
         sendMessageButton.setBounds(916, 532, 60, 32);
         sendMessageButton.setForeground(Color.WHITE);
         sendMessageButton.setBackground(Color.BLACK);
         sendMessageButton.addActionListener(new SubmitMessageAction());
-        contentPane.add(sendMessageButton);
+        mainPanel.add(sendMessageButton);
 
         startButton.setBounds(310, 350, 80, 30);
         startButton.setBackground(Color.BLACK);
         startButton.setForeground(Color.WHITE);
         startButton.setVisible(false);
-        contentPane.add(startButton, 2);
+        mainPanel.add(startButton, 2);
 /*
         timerLabel = new JLabel("0");
         timerLabel.setBounds(345, 240, 100, 30);
         timerLabel.setForeground(Color.YELLOW);
-        contentPane.add(timerLabel, 2);
+        mainPanel.add(timerLabel, 2);
         timerLabel.setVisible(false);
 
         timerLabel2 = new JLabel("남은 시간");
         timerLabel2.setBounds(325, 220, 100, 30);
         timerLabel2.setForeground(Color.YELLOW);
-        contentPane.add(timerLabel2, 2);
+        mainPanel.add(timerLabel2, 2);
         timerLabel2.setVisible(false);*/
 
         centerLabel.setBounds(200, 200, 300, 200);
         centerLabel.setBackground(Color.red);
         centerLabel.setForeground(Color.white);
-        contentPane.add(centerLabel, 2);
+        mainPanel.add(centerLabel, 2);
 
         /*deathBtn = new JButton("Kill");
         deathBtn.setBounds(280, 320, 70, 30);
         deathBtn.setBackground(Color.BLACK);
         deathBtn.setForeground(Color.WHITE);
         deathBtn.setVisible(false);
-        contentPane.add(deathBtn, 2);*/
+        mainPanel.add(deathBtn, 2);*/
 
        /* liveBtn = new JButton("Save");
         liveBtn.setBounds(360, 320, 70, 30);
         liveBtn.setBackground(Color.BLACK);
         liveBtn.setForeground(Color.WHITE);
         liveBtn.setVisible(false);
-        contentPane.add(liveBtn, 2);*/
+        mainPanel.add(liveBtn, 2);*/
+
+        this.addWindowListener(new CloseWindowAction());
 
         setVisible(true);
     }
 
     class SubmitMessageAction implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             User.getInstance().sendMessage(inputChatTextField.getText());
+        }
+    }
+
+    class CloseWindowAction extends WindowAdapter {
+        @Override
+        public void windowClosing(WindowEvent windowEvent) {
+            if (JOptionPane.showConfirmDialog(GameFrame.getInstance(),
+                    "Are you sure you want to close this window?", "Close Window?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                User.getInstance().logout();
+                System.exit(0);
+            }
         }
     }
 }
