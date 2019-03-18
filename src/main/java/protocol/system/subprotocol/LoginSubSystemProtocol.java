@@ -3,6 +3,7 @@ package protocol.system.subprotocol;
 import client.frame.GameFrame;
 import client.frame.LoginFrame;
 import exception.game.login.LoginFailureException;
+import game.User;
 import protocol.system.SystemProtocol;
 
 public class LoginSubSystemProtocol extends SystemProtocol {
@@ -51,10 +52,10 @@ public class LoginSubSystemProtocol extends SystemProtocol {
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
 
-        if( !this.isLoginSuccess ) {
+        if( !this.isLoginSuccess )
             throw new LoginFailureException("Login Failed, reason = " + this.loginFailedReason);
-        }
 
+        User.getInstance().setUserId(this.userId);
         LoginFrame.getInstance().setVisible(false);
         GameFrame.getInstance().boot();
     }
