@@ -1,6 +1,6 @@
 package protocol.chat.subprotocol;
 
-import client.frame.GameFrame;
+import client.frame.game.GameFrame;
 import protocol.chat.ChatProtocol;
 
 public class NormalSubChatProtocol extends ChatProtocol {

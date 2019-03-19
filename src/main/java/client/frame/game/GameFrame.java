@@ -1,4 +1,4 @@
-package client.frame;
+package client.frame.game;
 
 import exception.game.gui.MessageAppendToPanelFailure;
 import game.User;
@@ -12,19 +12,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 public class GameFrame extends JFrame {
     private static GameFrame gameFrame = new GameFrame();
 
+    /** 메인 패널 **/
     private JPanel mainPanel;
+    private JLabel centerLabel;          // GameFrame 중앙 라벨
+    private List<UserFrame> userPanelList;  // 유저 패널 리스트
 
     /** 채팅창 **/
-    private JTextField inputChatTextField; // 보낼 메세지 쓰는곳
-    private JScrollPane scrollPane;
-    private JButton sendMessageButton; // 전송버튼
-    private JButton startButton;       // 게임 시작 버튼
-    private JLabel centerLabel;        // GameFrame 중앙 라벨
-    private JTextPane textPane; // 수신된 메세지를 나타낼 변수
+    private JTextField inputChatTextField; // 채팅입력창
+    private JScrollPane scrollPane;    // 채팅창 스크롤 바
+    private JButton sendMessageButton; // 채팅창 전송버튼
+    private JTextPane textPane;        // 채팅창
 
 
     private GameFrame() {
@@ -33,14 +35,21 @@ public class GameFrame extends JFrame {
         scrollPane = new JScrollPane();
         inputChatTextField = new JTextField();
         sendMessageButton = new JButton("전송");
-        startButton = new JButton("게임시작");
         centerLabel = new JLabel("환영합니다.", JLabel.CENTER);
     }
 
+    /**
+     * @return gameFrame GameFrame
+     * 게임프레임 반환
+     * **/
     public static GameFrame getInstance() {
         return gameFrame;
     }
 
+    /**
+     * @param message String 출력할 메시지
+     * 채팅창에 메시지를 출력
+     **/
     public void appendMessageToTextPane(String message) {
         StyledDocument document = (StyledDocument) this.textPane.getDocument();
         try {
@@ -51,6 +60,9 @@ public class GameFrame extends JFrame {
         }
     }
 
+    /**
+     * 로그인 성공 시 실행, GameFrame 을 띄움
+     * **/
     public void boot() {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,48 +89,20 @@ public class GameFrame extends JFrame {
         sendMessageButton.addActionListener(new SubmitMessageAction());
         mainPanel.add(sendMessageButton);
 
-        startButton.setBounds(310, 350, 80, 30);
-        startButton.setBackground(Color.BLACK);
-        startButton.setForeground(Color.WHITE);
-        startButton.setVisible(false);
-        mainPanel.add(startButton, 2);
-/*
-        timerLabel = new JLabel("0");
-        timerLabel.setBounds(345, 240, 100, 30);
-        timerLabel.setForeground(Color.YELLOW);
-        mainPanel.add(timerLabel, 2);
-        timerLabel.setVisible(false);
-
-        timerLabel2 = new JLabel("남은 시간");
-        timerLabel2.setBounds(325, 220, 100, 30);
-        timerLabel2.setForeground(Color.YELLOW);
-        mainPanel.add(timerLabel2, 2);
-        timerLabel2.setVisible(false);*/
-
         centerLabel.setBounds(200, 200, 300, 200);
         centerLabel.setBackground(Color.red);
         centerLabel.setForeground(Color.white);
         mainPanel.add(centerLabel, 2);
-
-        /*deathBtn = new JButton("Kill");
-        deathBtn.setBounds(280, 320, 70, 30);
-        deathBtn.setBackground(Color.BLACK);
-        deathBtn.setForeground(Color.WHITE);
-        deathBtn.setVisible(false);
-        mainPanel.add(deathBtn, 2);*/
-
-       /* liveBtn = new JButton("Save");
-        liveBtn.setBounds(360, 320, 70, 30);
-        liveBtn.setBackground(Color.BLACK);
-        liveBtn.setForeground(Color.WHITE);
-        liveBtn.setVisible(false);
-        mainPanel.add(liveBtn, 2);*/
 
         this.addWindowListener(new CloseWindowAction());
 
         setVisible(true);
     }
 
+    /**
+     * 메시지 전송 액션
+     * 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
+     **/
     class SubmitMessageAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -126,6 +110,10 @@ public class GameFrame extends JFrame {
         }
     }
 
+    /**
+     * 윈도우창 닫기 액션
+     * 로그아웃 처리 및 프로그램 종료
+     **/
     class CloseWindowAction extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent windowEvent) {

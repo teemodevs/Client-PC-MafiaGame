@@ -1,6 +1,6 @@
 package protocol.system.subprotocol;
 
-import client.frame.GameFrame;
+import client.frame.game.GameFrame;
 import protocol.system.SystemProtocol;
 
 public class LogoutSubSystemProtocol extends SystemProtocol {

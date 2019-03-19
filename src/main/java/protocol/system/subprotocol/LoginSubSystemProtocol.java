@@ -2,7 +2,7 @@ package protocol.system.subprotocol;
 
 import java.util.List;
 
-import client.frame.GameFrame;
+import client.frame.game.GameFrame;
 import client.frame.LoginFrame;
 import exception.game.login.LoginFailureException;
 import game.User;
