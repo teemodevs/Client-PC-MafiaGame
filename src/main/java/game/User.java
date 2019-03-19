@@ -44,6 +44,7 @@ public class User extends Thread {
         Protocol protocol = new LoginSubSystemProtocol()
                                 .setUserId(id)
                                 .setPassword(password);
+        this.userId = id;
         this.messageSenderReceiver.sendMessage(protocol);
     }
 
