@@ -68,16 +68,20 @@ public class LoginSubSystemProtocol extends SystemProtocol {
             throw new LoginFailureException("Login Failed, reason = " + this.loginFailedReason);
         
         User user = User.getInstance();
+        GameFrame gameFrame = GameFrame.getInstance();
         
         // 자기 자신에 대한 로그인 메시지인 경우 GameFrame을 띄움
         if(user.getUserId().equals(this.userId)) {
 	        user.setUserId(this.userId);
 	        LoginFrame.getInstance().setVisible(false);
-	        GameFrame.getInstance().boot();
+	        gameFrame.boot();
         }
         
-        // 특정 유저가 로그인 했다는 알림
-        GameFrame.getInstance().appendMessageToTextPane(this.userId + " login");
-        GameFrame.getInstance().appendMessageToTextPane("login users : " + this.loginUsers.toString());
+        // 로그인한 유저 알림
+        gameFrame.appendMessageToTextPane(this.userId + " login");
+        gameFrame.appendMessageToTextPane("login users : " + this.loginUsers.toString());
+        
+        // 로그인한 유저 프레임 붙임
+        gameFrame.attachUserFrame(this.userId);
     }
 }

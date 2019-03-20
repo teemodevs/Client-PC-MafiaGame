@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameFrame extends JFrame {
@@ -20,7 +21,7 @@ public class GameFrame extends JFrame {
     /** 메인 패널 **/
     private JPanel mainPanel;
     private JLabel centerLabel;          // GameFrame 중앙 라벨
-    private List<UserFrame> userPanelList;  // 유저 패널 리스트
+    private List<UserFrame> userFrameList;  // 유저 패널 리스트
 
     /** 채팅창 **/
     private JTextField inputChatTextField; // 채팅입력창
@@ -36,6 +37,7 @@ public class GameFrame extends JFrame {
         inputChatTextField = new JTextField();
         sendMessageButton = new JButton("전송");
         centerLabel = new JLabel("환영합니다.", JLabel.CENTER);
+        userFrameList = new ArrayList<UserFrame>(8);
     }
 
     /**
@@ -99,6 +101,51 @@ public class GameFrame extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * @param user User 접속한 유저 객체
+     * 유저 접속 시 UserFrame을 mainPanel에 붙임
+     **/
+    public void attachUserFrame(String userId) {
+    	UserFrame userFrame = new UserFrame(userId);
+    	this.userFrameList.add(userFrame);
+    	
+    	switch(this.userFrameList.indexOf(userFrame)) {
+	    	case 0 :
+	    		userFrame.getCharacterButton().setBounds(50, 50, 100, 100);
+	    		userFrame.getIdLabel().setBounds(87, 30, 60, 30);
+	    		break;
+	    	case 1 :
+	    		userFrame.getCharacterButton().setBounds(300, 50, 100, 100);
+	    		userFrame.getIdLabel().setBounds(337, 30, 60, 30);
+	    		break;
+	    	case 2 :
+	    		userFrame.getCharacterButton().setBounds(550, 50, 100, 100);
+	    		userFrame.getIdLabel().setBounds(587, 30, 60, 30);
+	    		break;
+	    	case 3 :
+	    		userFrame.getCharacterButton().setBounds(50, 250, 100, 100);
+	    		userFrame.getIdLabel().setBounds(87, 230, 60, 30);
+	    		break;
+	    	case 4 :
+	    		userFrame.getCharacterButton().setBounds(550, 250, 100, 100);
+	    		userFrame.getIdLabel().setBounds(587, 230, 60, 30);
+	    		break;
+	    	case 5 :
+	    		userFrame.getCharacterButton().setBounds(50, 450, 100, 100);
+	    		userFrame.getIdLabel().setBounds(87, 430, 60, 30);
+	    		break;
+	    	case 6 :
+	    		userFrame.getCharacterButton().setBounds(300, 450, 100, 100);
+	    		userFrame.getIdLabel().setBounds(337, 430, 60, 30);
+	    		break;
+	    	case 7 :
+	    		userFrame.getCharacterButton().setBounds(550, 450, 100, 100);
+	    		userFrame.getIdLabel().setBounds(587, 430, 60, 30);
+	    		break;
+    	}
+    	this.mainPanel.add(userFrame.getCharacterPanel());
+    }
+    
     /**
      * 메시지 전송 액션
      * 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
