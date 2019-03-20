@@ -18,6 +18,9 @@ public class LogoutSubSystemProtocol extends SystemProtocol {
     @Override
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
-        GameFrame.getInstance().appendMessageToTextPane(userId + " logout");
+        GameFrame gameFrame = GameFrame.getInstance();
+        gameFrame.appendMessageToTextPane(userId + " logout");
+        gameFrame.detachUserFrame(userId);
+
     }
 }

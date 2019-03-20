@@ -80,8 +80,7 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         // 로그인한 유저 알림
         gameFrame.appendMessageToTextPane(this.userId + " login");
         gameFrame.appendMessageToTextPane("login users : " + this.loginUsers.toString());
-        
-        // 로그인한 유저 프레임 붙임
-        gameFrame.attachUserFrame(this.userId);
+
+        gameFrame.attachUserFrame(this.loginUsers);
     }
 }

@@ -16,14 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameFrame extends JFrame {
+    private static final int MAX_USERS = 8;
     private static GameFrame gameFrame = new GameFrame();
 
-    /** 메인 패널 **/
+    /**
+     * 메인 패널
+     **/
     private JPanel mainPanel;
     private JLabel centerLabel;          // GameFrame 중앙 라벨
     private List<UserFrame> userFrameList;  // 유저 패널 리스트
 
-    /** 채팅창 **/
+    /**
+     * 채팅창
+     **/
     private JTextField inputChatTextField; // 채팅입력창
     private JScrollPane scrollPane;    // 채팅창 스크롤 바
     private JButton sendMessageButton; // 채팅창 전송버튼
@@ -37,20 +42,28 @@ public class GameFrame extends JFrame {
         inputChatTextField = new JTextField();
         sendMessageButton = new JButton("전송");
         centerLabel = new JLabel("환영합니다.", JLabel.CENTER);
-        userFrameList = new ArrayList<UserFrame>(8);
+        userFrameList = new ArrayList<>(8);
+
+        // 8개의 유저프레임을 미리 설정해놓고 붙여놓음
+        for (int index = 0; index < MAX_USERS; index++) {
+            UserFrame userFrame = new UserFrame(index);
+            this.userFrameList.add(userFrame);
+            this.mainPanel.add(userFrame.getCharacterButton());
+            this.mainPanel.add(userFrame.getIdLabel());
+        }
     }
 
     /**
-     * @return gameFrame GameFrame
      * 게임프레임 반환
-     * **/
+     * @return gameFrame GameFrame
+     **/
     public static GameFrame getInstance() {
         return gameFrame;
     }
 
     /**
-     * @param message String 출력할 메시지
      * 채팅창에 메시지를 출력
+     * @param message String 출력할 메시지
      **/
     public void appendMessageToTextPane(String message) {
         StyledDocument document = (StyledDocument) this.textPane.getDocument();
@@ -64,7 +77,7 @@ public class GameFrame extends JFrame {
 
     /**
      * 로그인 성공 시 실행, GameFrame 을 띄움
-     * **/
+     **/
     public void boot() {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,51 +114,57 @@ public class GameFrame extends JFrame {
         setVisible(true);
     }
 
-    /**
-     * @param user User 접속한 유저 객체
-     * 유저 접속 시 UserFrame을 mainPanel에 붙임
-     **/
-    public void attachUserFrame(String userId) {
-    	UserFrame userFrame = new UserFrame(userId);
-    	this.userFrameList.add(userFrame);
-    	
-    	switch(this.userFrameList.indexOf(userFrame)) {
-	    	case 0 :
-	    		userFrame.getCharacterButton().setBounds(50, 50, 100, 100);
-	    		userFrame.getIdLabel().setBounds(87, 30, 60, 30);
-	    		break;
-	    	case 1 :
-	    		userFrame.getCharacterButton().setBounds(300, 50, 100, 100);
-	    		userFrame.getIdLabel().setBounds(337, 30, 60, 30);
-	    		break;
-	    	case 2 :
-	    		userFrame.getCharacterButton().setBounds(550, 50, 100, 100);
-	    		userFrame.getIdLabel().setBounds(587, 30, 60, 30);
-	    		break;
-	    	case 3 :
-	    		userFrame.getCharacterButton().setBounds(50, 250, 100, 100);
-	    		userFrame.getIdLabel().setBounds(87, 230, 60, 30);
-	    		break;
-	    	case 4 :
-	    		userFrame.getCharacterButton().setBounds(550, 250, 100, 100);
-	    		userFrame.getIdLabel().setBounds(587, 230, 60, 30);
-	    		break;
-	    	case 5 :
-	    		userFrame.getCharacterButton().setBounds(50, 450, 100, 100);
-	    		userFrame.getIdLabel().setBounds(87, 430, 60, 30);
-	    		break;
-	    	case 6 :
-	    		userFrame.getCharacterButton().setBounds(300, 450, 100, 100);
-	    		userFrame.getIdLabel().setBounds(337, 430, 60, 30);
-	    		break;
-	    	case 7 :
-	    		userFrame.getCharacterButton().setBounds(550, 450, 100, 100);
-	    		userFrame.getIdLabel().setBounds(587, 430, 60, 30);
-	    		break;
-    	}
-    	this.mainPanel.add(userFrame.getCharacterPanel());
+    private UserFrame getEmptyUserFrame() {
+        for (UserFrame userFrame : this.userFrameList) {
+            if (!userFrame.isLogined())
+                return userFrame;
+        }
+        return null;
     }
-    
+
+    /**
+     * 유저가 새로 로그인할 때 UserFrame에 할당 후 활성화
+     * @param loginUserIdList String 서버 기준에서 접속한 유저의 id List
+     **/
+    public void attachUserFrame(List<String> loginUserIdList) {
+        // 클라이언트 기준 접속한 유저의 id List
+        List<String> clientUserIdList = new ArrayList<>();
+
+        for (UserFrame userFrame : this.userFrameList) {
+            if (userFrame.isLogined())
+                clientUserIdList.add(userFrame.getIdLabel().getText());
+        }
+
+        // 서버 기준의 접속 id 리스트에서, 클라 기준 접속 id 리스트를 제외하여 새로 접속한 유저의 id를 구함
+        loginUserIdList.removeAll(clientUserIdList);
+
+        // 새로 접속한 유저를 UserFrame에 반영
+        for (String userId : loginUserIdList) {
+            UserFrame newUserFrame = getEmptyUserFrame();
+            newUserFrame.getIdLabel().setText(userId);
+            newUserFrame.setLogined(true);
+            newUserFrame.getIdLabel().setVisible(true);
+            newUserFrame.getCharacterButton().setVisible(true);
+        }
+
+    }
+
+    /**
+     * 특정 유저가 로그아웃하면 해당 유저 자리에 있는 UserFrame을
+     * 다른 유저가 입장 시 할당될 수 있게 비활성화
+     * @param logoutUserId String 로그아웃 한 유저의 id
+     **/
+    public void detachUserFrame(String logoutUserId) {
+        for (UserFrame userFrame : this.userFrameList) {
+            if (userFrame.isLogined() && userFrame.getIdLabel().getText().equals(logoutUserId)) {
+                userFrame.setLogined(false);
+                userFrame.getIdLabel().setText(null);
+                userFrame.getIdLabel().setVisible(false);
+                userFrame.getCharacterButton().setVisible(false);
+            }
+        }
+    }
+
     /**
      * 메시지 전송 액션
      * 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
@@ -167,7 +186,7 @@ public class GameFrame extends JFrame {
             if (JOptionPane.showConfirmDialog(GameFrame.getInstance(),
                     "Are you sure you want to close this window?", "Close Window?",
                     JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                    JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                 User.getInstance().logout();
                 System.exit(0);
             }

@@ -1,51 +1,77 @@
 package client.frame.game;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class UserFrame extends JFrame {
-    private String userId;
-    private JPanel characterPanel;
+public class UserFrame {
+
     private JLabel idLabel;
     private JButton characterButton;
-    
-    public UserFrame(String userId) {
-    	this.userId = userId;
-    	this.characterPanel = new JPanel();
-    	this.idLabel = new JLabel();
-    	this.idLabel.setText(this.userId);
-    	this.characterButton = new JButton();
-    	this.characterPanel.add(idLabel);
-    	this.characterPanel.add(characterButton);
-    	this.characterPanel.setVisible(true);
+    private boolean isLogined;
+    private String userId;
+
+    public UserFrame(int index) {
+        this.isLogined = false;
+
+        this.idLabel = new JLabel();
+        this.idLabel.setForeground(Color.RED);
+        this.idLabel.setVisible(false);
+
+        this.characterButton = new JButton();
+        this.characterButton.setBackground(Color.WHITE);
+        this.characterButton.setVisible(false);
+
+        switch (index) {
+            case 0:
+                this.characterButton.setBounds(50, 50, 100, 100);
+                this.idLabel.setBounds(87, 30, 60, 30);
+                break;
+            case 1:
+                this.characterButton.setBounds(300, 50, 100, 100);
+                this.idLabel.setBounds(337, 30, 60, 30);
+                break;
+            case 2:
+                this.characterButton.setBounds(550, 50, 100, 100);
+                this.idLabel.setBounds(587, 30, 60, 30);
+                break;
+            case 3:
+                this.characterButton.setBounds(50, 250, 100, 100);
+                this.idLabel.setBounds(87, 230, 60, 30);
+                break;
+            case 4:
+                this.characterButton.setBounds(550, 250, 100, 100);
+                this.idLabel.setBounds(587, 230, 60, 30);
+                break;
+            case 5:
+                this.characterButton.setBounds(50, 450, 100, 100);
+                this.idLabel.setBounds(87, 430, 60, 30);
+                break;
+            case 6:
+                this.characterButton.setBounds(300, 450, 100, 100);
+                this.idLabel.setBounds(337, 430, 60, 30);
+                break;
+            case 7:
+                this.characterButton.setBounds(550, 450, 100, 100);
+                this.idLabel.setBounds(587, 430, 60, 30);
+                break;
+        }
+
     }
 
-	public String getUserId() {
-		return userId;
-	}
+    public JLabel getIdLabel() {
+        return idLabel;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public JButton getCharacterButton() {
+        return characterButton;
+    }
 
-	public JLabel getIdLabel() {
-		return idLabel;
-	}
+    public boolean isLogined() {
+        return isLogined;
+    }
 
-	public void setIdLabel(JLabel idLabel) {
-		this.idLabel = idLabel;
-	}
+    public void setLogined(boolean logined) {
+        isLogined = logined;
+    }
 
-	public JButton getCharacterButton() {
-		return characterButton;
-	}
-
-	public void setCharacterButton(JButton characterButton) {
-		this.characterButton = characterButton;
-	}
-	
-	public JPanel getCharacterPanel() {
-		return this.characterPanel;
-	}
-	
-	
 }
