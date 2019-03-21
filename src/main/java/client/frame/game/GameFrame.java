@@ -132,6 +132,7 @@ public class GameFrame extends JFrame {
 		textPane.setEditable(false);
 
 		this.addWindowListener(new CloseWindowAction());
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}
 
