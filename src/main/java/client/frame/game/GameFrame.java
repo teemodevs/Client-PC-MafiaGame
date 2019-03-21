@@ -30,7 +30,7 @@ public class GameFrame extends JFrame {
 	/**
 	 * 메인 패널
 	 **/
-	private JPanel mainPanel;
+	private JPanel mainPanel; // 메인 패널
 	private JLabel centerLabel; // GameFrame 중앙 라벨
 	private List<UserFrame> userFrameList; // 유저 패널 리스트
 
@@ -44,34 +44,33 @@ public class GameFrame extends JFrame {
 
 	private GameFrame() {
 		mainPanel = new JPanel();
-		textPane = new JTextPane();
-		scrollPane = new JScrollPane();
-		inputChatTextField = new JTextField();
-		sendMessageButton = new JButton("전송");
 		centerLabel = new JLabel("환영합니다.", JLabel.CENTER);
 		userFrameList = new ArrayList<>(8);
-
-		// 8개의 유저프레임을 미리 설정해놓고 붙여놓음
-		for (int index = 0; index < MAX_USERS; index++) {
-			UserFrame userFrame = new UserFrame(index);
-			this.userFrameList.add(userFrame);
-			this.mainPanel.add(userFrame.getCharacterButton());
-			this.mainPanel.add(userFrame.getIdLabel());
-		}
+		
+		inputChatTextField = new JTextField();
+		scrollPane = new JScrollPane();
+		sendMessageButton = new JButton("전송");
+		textPane = new JTextPane();
 	}
 
 	/**
 	 * 게임프레임 반환
-	 * 
-	 * @return gameFrame GameFrame
+	 * @return gameFrame GameFrame 게임프레임
 	 **/
 	public static GameFrame getInstance() {
 		return gameFrame;
 	}
 
 	/**
+	 * 게임프레임 메인 패널 반환
+	 * @return mainPanel JPanel 게임프레임 메인 패널
+	 **/
+	public JPanel getMainPanel() {
+		return this.mainPanel;
+	}
+	
+	/**
 	 * 채팅창에 메시지를 출력
-	 * 
 	 * @param message String 출력할 메시지
 	 **/
 	public void appendMessageToTextPane(String message) {
@@ -92,34 +91,47 @@ public class GameFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(200, 100, 1000, 620);
 
+		/* 메인 패널 설정 */
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		mainPanel.setBackground(Color.BLACK);
 		mainPanel.setLayout(null);
 		setContentPane(mainPanel);
 
-		textPane.setBackground(Color.WHITE);
-		textPane.setEditable(false);
-
+		/* 센터 라벨 설정 */
+		centerLabel.setBounds(200, 200, 300, 200);
+		centerLabel.setBackground(Color.red);
+		centerLabel.setForeground(Color.white);
+		mainPanel.add(centerLabel);
+		
+		/* 유저 프레임 설정 */
+		for (int index = 0; index < MAX_USERS; index++) {
+			UserFrame userFrame = new UserFrame(index);
+			this.userFrameList.add(userFrame);
+			this.mainPanel.add(userFrame.getCharacterButton());
+			this.mainPanel.add(userFrame.getIdLabel());
+		}
+		
+		/* 채팅 입력창 설정 */
+		inputChatTextField.setBounds(696, 532, 210, 32);
+		mainPanel.add(inputChatTextField);
+		
+		/* 채팅창 스크롤 설정 */
 		scrollPane.setBounds(696, 30, 280, 490);
 		scrollPane.setViewportView(textPane);
 		mainPanel.add(scrollPane);
-
-		inputChatTextField.setBounds(696, 532, 210, 32);
-		mainPanel.add(inputChatTextField);
-
+		
+		/* 채팅 전송 버튼 설정 */
 		sendMessageButton.setBounds(916, 532, 60, 32);
 		sendMessageButton.setForeground(Color.WHITE);
 		sendMessageButton.setBackground(Color.BLACK);
 		sendMessageButton.addActionListener(new SubmitMessageAction());
 		mainPanel.add(sendMessageButton);
-
-		centerLabel.setBounds(200, 200, 300, 200);
-		centerLabel.setBackground(Color.red);
-		centerLabel.setForeground(Color.white);
-		mainPanel.add(centerLabel, 2);
+		
+		/* 채팅창 설정 */
+		textPane.setBackground(Color.WHITE);
+		textPane.setEditable(false);
 
 		this.addWindowListener(new CloseWindowAction());
-
 		setVisible(true);
 	}
 
@@ -175,6 +187,18 @@ public class GameFrame extends JFrame {
 		}
 	}
 
+	public void addStartButton() {
+		/* 시작 버튼 설정 */
+		JButton startButton = new JButton("start");
+		startButton.setBounds(310, 350, 80, 30);
+		startButton.setBackground(Color.WHITE);
+		startButton.setForeground(Color.WHITE);
+		startButton.addActionListener(new StartGameAction());
+		startButton.setVisible(true);
+		this.mainPanel.add(startButton);
+		repaint();
+	}
+	
 	/**
 	 * 메시지 전송 액션 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
 	 **/
@@ -198,5 +222,16 @@ public class GameFrame extends JFrame {
 				System.exit(0);
 			}
 		}
+	}
+	
+	/**
+	 * 서버에 게임 시작 요청
+	 **/
+	class StartGameAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			User.getInstance().startGame();	
+		}
+		
 	}
 }

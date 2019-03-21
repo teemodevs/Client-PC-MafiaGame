@@ -5,6 +5,7 @@ import protocol.Protocol;
 import protocol.chat.subprotocol.NormalSubChatProtocol;
 import protocol.system.subprotocol.LoginSubSystemProtocol;
 import protocol.system.subprotocol.LogoutSubSystemProtocol;
+import protocol.system.subprotocol.StartgameSubSystemProtocol;
 
 import java.net.Socket;
 
@@ -88,6 +89,11 @@ public class User extends Thread {
                                 .setSender(this.getUserId())
                                 .setMessage(message);
         this.messageSenderReceiver.sendMessage(protocol);
+    }
+    
+    public void startGame() {
+    	Protocol protocol = new StartgameSubSystemProtocol();
+    	this.messageSenderReceiver.sendMessage(protocol);
     }
 
 }
