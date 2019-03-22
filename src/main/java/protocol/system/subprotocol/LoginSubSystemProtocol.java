@@ -1,5 +1,6 @@
 package protocol.system.subprotocol;
 
+import java.awt.Color;
 import java.util.List;
 
 import client.frame.game.GameFrame;
@@ -78,8 +79,8 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         }
         
         // 로그인한 유저 알림
-        gameFrame.appendMessageToTextPane(this.userId + " login");
-        gameFrame.appendMessageToTextPane("login users : " + this.loginUsers.toString());
+        gameFrame.appendMessageToTextPane(this.userId + " login", Color.BLUE);
+        gameFrame.appendMessageToTextPane("login users : " + this.loginUsers.toString(), Color.BLUE);
 
         gameFrame.attachUserFrame(this.loginUsers);
     }

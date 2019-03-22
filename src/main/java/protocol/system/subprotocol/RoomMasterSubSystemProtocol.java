@@ -1,5 +1,7 @@
 package protocol.system.subprotocol;
 
+import java.awt.Color;
+
 import client.frame.game.GameFrame;
 import game.User;
 import protocol.system.SystemProtocol;
@@ -24,7 +26,7 @@ public class RoomMasterSubSystemProtocol extends SystemProtocol {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
         
         GameFrame gameFrame = GameFrame.getInstance();
-        gameFrame.appendMessageToTextPane("your are master");
+        gameFrame.appendMessageToTextPane("your are master", Color.BLUE);
         User.getInstance().setRoomMaster(true);
         gameFrame.addStartButton();
 		

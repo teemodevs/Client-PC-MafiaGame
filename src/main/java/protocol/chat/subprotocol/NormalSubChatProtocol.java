@@ -1,5 +1,7 @@
 package protocol.chat.subprotocol;
 
+import java.awt.Color;
+
 import client.frame.game.GameFrame;
 import protocol.chat.ChatProtocol;
 
@@ -28,6 +30,6 @@ public class NormalSubChatProtocol extends ChatProtocol {
     @Override
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
-        GameFrame.getInstance().appendMessageToTextPane(sender + " : " + message);
+        GameFrame.getInstance().appendMessageToTextPane(sender + " : " + message, Color.BLACK);
     }
 }

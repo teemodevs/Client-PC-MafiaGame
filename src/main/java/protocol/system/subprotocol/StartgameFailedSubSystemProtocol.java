@@ -1,5 +1,7 @@
 package protocol.system.subprotocol;
 
+import java.awt.Color;
+
 import client.frame.game.GameFrame;
 import protocol.system.SystemProtocol;
 
@@ -21,6 +23,6 @@ public class StartgameFailedSubSystemProtocol extends SystemProtocol {
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
         GameFrame gameFrame = GameFrame.getInstance();
-        gameFrame.appendMessageToTextPane(this.reason);
+        gameFrame.appendMessageToTextPane(this.reason, Color.BLUE);
     }
 }

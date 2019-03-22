@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import java.awt.Color;
@@ -75,10 +77,13 @@ public class GameFrame extends JFrame {
 	 * 채팅창에 메시지를 출력
 	 * @param message String 출력할 메시지
 	 **/
-	public void appendMessageToTextPane(String message) {
+	public void appendMessageToTextPane(String message, Color color) {
+		SimpleAttributeSet simpleAttributeSet = new SimpleAttributeSet();
+		simpleAttributeSet.addAttribute(StyleConstants.Foreground, color);
+		
 		StyledDocument document = (StyledDocument) this.textPane.getDocument();
 		try {
-			document.insertString(document.getLength(), message + "\n", null);
+			document.insertString(document.getLength(), message + "\n", simpleAttributeSet);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 			throw new MessageAppendToPanelFailure("Message Append to Panel Failed");
