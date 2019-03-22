@@ -11,7 +11,7 @@ import java.net.Socket;
 
 public class User extends Thread {
     private static User user = new User();
-
+    private boolean isRoomMaster;
     private String userId; // 현재 유저 id
     private MessageSenderReceiver messageSenderReceiver; // 메시시 송수신용
 
@@ -39,7 +39,16 @@ public class User extends Thread {
         return this;
     }
 
-    /**
+    public boolean isRoomMaster() {
+		return isRoomMaster;
+	}
+
+	public User setRoomMaster(boolean isRoomMaster) {
+		this.isRoomMaster = isRoomMaster;
+		return this;
+	}
+
+	/**
      * @param socket Socket IP, PORT 정보가 바인딩 된, 연결할 소켓
      * 소켓 정보를 받아서 messageSenderReceiver의 socket field에 저장
      * **/

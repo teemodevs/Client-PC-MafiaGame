@@ -1,12 +1,5 @@
 package protocol.system.subprotocol;
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
 import client.frame.game.GameFrame;
 import game.User;
 import protocol.system.SystemProtocol;
@@ -32,6 +25,7 @@ public class RoomMasterSubSystemProtocol extends SystemProtocol {
         
         GameFrame gameFrame = GameFrame.getInstance();
         gameFrame.appendMessageToTextPane("your are master");
+        User.getInstance().setRoomMaster(true);
         gameFrame.addStartButton();
 		
         

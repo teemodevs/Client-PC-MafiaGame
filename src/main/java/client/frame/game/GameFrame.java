@@ -1,6 +1,7 @@
 package client.frame.game;
 
 import exception.game.gui.MessageAppendToPanelFailure;
+import game.GameContext;
 import game.User;
 
 import javax.swing.JButton;
@@ -33,6 +34,7 @@ public class GameFrame extends JFrame {
 	private JPanel mainPanel; // 메인 패널
 	private JLabel centerLabel; // GameFrame 중앙 라벨
 	private List<UserFrame> userFrameList; // 유저 패널 리스트
+	private JButton startButton; // 시작 버튼
 
 	/**
 	 * 채팅창
@@ -188,16 +190,28 @@ public class GameFrame extends JFrame {
 		}
 	}
 
+	/**
+	 * 방장이 바뀐 경우 버튼 추가
+	 * **/
 	public void addStartButton() {
 		/* 시작 버튼 설정 */
-		JButton startButton = new JButton("start");
-		startButton.setBounds(310, 350, 80, 30);
-		startButton.setBackground(Color.WHITE);
-		startButton.setForeground(Color.WHITE);
-		startButton.addActionListener(new StartGameAction());
-		startButton.setVisible(true);
+		this.startButton = new JButton("start");
+		this.startButton.setBounds(310, 350, 80, 30);
+		this.startButton.setBackground(Color.WHITE);
+		this.startButton.setForeground(Color.WHITE);
+		this.startButton.addActionListener(new StartGameAction());
+		
+		if (GameContext.getInstance().isPlaying())
+			this.startButton.setVisible(false);
+		else 
+			this.startButton.setVisible(true);
+		
 		this.mainPanel.add(startButton);
 		repaint();
+	}
+	
+	public void setVisibleStartButton(boolean visible) {
+		this.startButton.setVisible(visible);
 	}
 	
 	/**
