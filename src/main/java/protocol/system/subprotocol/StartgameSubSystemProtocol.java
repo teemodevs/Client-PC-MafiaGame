@@ -15,7 +15,7 @@ public class StartgameSubSystemProtocol extends SystemProtocol {
 		GameFrame gameFrame = GameFrame.getInstance();
 		gameFrame.appendMessageToTextPane("Game Started", Color.BLUE);
 
-		GameContext.getInstance().setPlaying(true);
+		GameContext.getInstance().gameStart();
 
 		if (User.getInstance().isRoomMaster())
 			gameFrame.setVisibleStartButton(false);
