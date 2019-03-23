@@ -11,9 +11,12 @@ public class StartgameSubSystemProtocol extends SystemProtocol {
 	@Override
 	public void execute() {
 		System.out.println(this.getClass().getSimpleName() + ".execute()");
+
 		GameFrame gameFrame = GameFrame.getInstance();
-		gameFrame.appendMessageToTextPane("Game Statred", Color.BLUE);
+		gameFrame.appendMessageToTextPane("Game Started", Color.BLUE);
+
 		GameContext.getInstance().setPlaying(true);
+
 		if (User.getInstance().isRoomMaster())
 			gameFrame.setVisibleStartButton(false);
 	}
