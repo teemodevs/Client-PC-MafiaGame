@@ -13,9 +13,7 @@ import protocol.system.subprotocol.*;
         @JsonSubTypes.Type(value = EndgameSubSystemProtocol.class,   		name = "ENDGAME"),
         @JsonSubTypes.Type(value = LoginSubSystemProtocol.class,     		name = "LOGIN"),
         @JsonSubTypes.Type(value = LogoutSubSystemProtocol.class,    		name = "LOGOUT"),
-        @JsonSubTypes.Type(value = RoomSubSystemProtocol.class,      		name = "ROOM"),
         @JsonSubTypes.Type(value = StartgameSubSystemProtocol.class, 		name = "STARTGAME"),
-        @JsonSubTypes.Type(value = ServerConnectionSubSystemProtocol.class,	name = "SERVERCONNECTION"),
         @JsonSubTypes.Type(value = RoomMasterSubSystemProtocol.class, 		name = "ROOMMASTER"),
         @JsonSubTypes.Type(value = StartgameFailedSubSystemProtocol.class, 	name = "STARTGAMEFAIL")
 })
