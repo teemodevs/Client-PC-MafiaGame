@@ -13,7 +13,6 @@ import protocol.game.subprotocol.*;
         @JsonSubTypes.Type(value = JobSubGameProtocol.class,    name = "JOB"),
         @JsonSubTypes.Type(value = PhaseSubGameProtocol.class,  name = "PHASE"),
         @JsonSubTypes.Type(value = ResultSubGameProtocol.class, name = "RESULT"),
-        @JsonSubTypes.Type(value = StateSubGameProtocol.class,  name = "STATE"),
         @JsonSubTypes.Type(value = JobAllocationSubGameProtocol.class,  name = "JOBALLOCATION")
 })
 public abstract class GameProtocol implements Protocol {
