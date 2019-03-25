@@ -4,6 +4,7 @@ import game.job.Job;
 import message.MessageSenderReceiver;
 import protocol.Protocol;
 import protocol.chat.subprotocol.NormalSubChatProtocol;
+import protocol.game.subprotocol.JobSubGameProtocol;
 import protocol.system.subprotocol.LoginSubSystemProtocol;
 import protocol.system.subprotocol.LogoutSubSystemProtocol;
 import protocol.system.subprotocol.StartgameSubSystemProtocol;
@@ -132,6 +133,15 @@ public class User extends Thread {
      **/
     public void startGame() {
     	Protocol protocol = new StartgameSubSystemProtocol();
+    	this.messageSenderReceiver.sendMessage(protocol);
+    }
+    
+    /**
+     * 선택한 유저에 대해 직업 행동을 요청
+     **/
+    public void jobAction(String targetUserId) {
+    	Protocol protocol = new JobSubGameProtocol()
+    							.setTargetUserId(targetUserId);
     	this.messageSenderReceiver.sendMessage(protocol);
     }
 

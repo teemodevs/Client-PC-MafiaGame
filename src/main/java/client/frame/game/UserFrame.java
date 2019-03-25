@@ -1,10 +1,15 @@
 package client.frame.game;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import game.User;
+import protocol.Protocol;
+import protocol.game.subprotocol.JobSubGameProtocol;
 import resource.ResourceLoader;
 
 public class UserFrame {
@@ -23,6 +28,7 @@ public class UserFrame {
 		this.characterButton = new JButton();
 		this.characterButton.setBackground(Color.BLACK);
 		this.characterButton.setIcon(ResourceLoader.getImageIconResource("img/civil.png"));
+		this.characterButton.addActionListener(new JobActionListener());
 		this.characterButton.setVisible(false);
 
 		switch (index) {
@@ -78,4 +84,10 @@ public class UserFrame {
 		isLogined = logined;
 	}
 
+	class JobActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			User.getInstance().jobAction(idLabel.getText());
+		}
+	}
 }
