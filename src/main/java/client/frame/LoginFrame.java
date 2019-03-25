@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * 맨 처음 애플리케이션을 켰을 때 로그인 하는 창
+ **/
 public class LoginFrame extends JFrame {
     private static LoginFrame loginFrame = new LoginFrame();
 

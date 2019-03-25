@@ -8,8 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import game.User;
-import protocol.Protocol;
-import protocol.game.subprotocol.JobSubGameProtocol;
 import resource.ResourceLoader;
 
 public class UserFrame {

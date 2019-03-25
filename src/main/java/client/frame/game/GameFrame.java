@@ -1,13 +1,14 @@
 package client.frame.game;
 
-import exception.game.gui.MessageAppendToPanelFailure;
-import game.GameContext;
-import game.User;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -18,14 +19,14 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
+import client.frame.action.CloseWindowWithLogoutAction;
+import exception.game.gui.MessageAppendToPanelFailure;
+import game.GameContext;
+import game.User;
 
+/**
+ * LobbyFrame에서 방을 선택하고 방에 들어왔을 때 게임창
+ **/
 public class GameFrame extends JFrame {
 	private static final int MAX_USERS = 8;
 	private static GameFrame gameFrame = new GameFrame();
@@ -138,7 +139,7 @@ public class GameFrame extends JFrame {
 		textPane.setBackground(Color.WHITE);
 		textPane.setEditable(false);
 
-		this.addWindowListener(new CloseWindowAction());
+		this.addWindowListener(new CloseWindowWithLogoutAction());
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}
@@ -226,21 +227,6 @@ public class GameFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			User.getInstance().sendMessage(inputChatTextField.getText());
-		}
-	}
-
-	/**
-	 * 윈도우창 닫기 액션 로그아웃 처리 및 프로그램 종료
-	 **/
-	class CloseWindowAction extends WindowAdapter {
-		@Override
-		public void windowClosing(WindowEvent windowEvent) {
-			if (JOptionPane.showConfirmDialog(GameFrame.getInstance(), "Are you sure you want to close this window?",
-					"Close Window?", JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-				User.getInstance().logout();
-				System.exit(0);
-			}
 		}
 	}
 	

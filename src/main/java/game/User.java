@@ -144,5 +144,12 @@ public class User extends Thread {
     							.setTargetUserId(targetUserId);
     	this.messageSenderReceiver.sendMessage(protocol);
     }
+    
+    /**
+     * 프로토콜 전송
+     **/
+    public void sendProtocol(Protocol protocol) {
+    	this.messageSenderReceiver.sendMessage(protocol);
+    }
 
 }

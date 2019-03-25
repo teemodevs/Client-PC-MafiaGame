@@ -1,12 +1,8 @@
 package protocol.system.subprotocol;
 
-import java.awt.Color;
-import java.util.List;
-
-import client.frame.game.GameFrame;
+import client.frame.LobbyFrame;
 import client.frame.LoginFrame;
 import exception.game.login.LoginFailureException;
-import game.User;
 import protocol.system.SystemProtocol;
 
 public class LoginSubSystemProtocol extends SystemProtocol {
@@ -14,7 +10,6 @@ public class LoginSubSystemProtocol extends SystemProtocol {
     private String password;
     private boolean isLoginSuccess;
     private String loginFailedReason;
-    private List<String> loginUsers; // 이미 로그인한 유저의 리스트
 
     public String getUserId() {
         return userId;
@@ -51,15 +46,6 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         this.loginFailedReason = loginFailedReason;
         return this;
     }
-
-    public List<String> getLoginUsers() {
-		return loginUsers;
-	}
-
-	public LoginSubSystemProtocol setLoginUsers(List<String> loginUsers) {
-		this.loginUsers = loginUsers;
-		return this;
-	}
 	
     @Override
     public void execute() {
@@ -68,20 +54,11 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         if( !this.isLoginSuccess )
             throw new LoginFailureException("Login Failed, reason = " + this.loginFailedReason);
         
-        User user = User.getInstance();
-        GameFrame gameFrame = GameFrame.getInstance();
+        // 로그인창 비활성화
+        LoginFrame.getInstance().setVisible(false);
         
-        // 자기 자신에 대한 로그인 메시지인 경우 GameFrame을 띄움
-        if(user.getUserId().equals(this.userId)) {
-	        user.setUserId(this.userId);
-	        LoginFrame.getInstance().setVisible(false);
-	        gameFrame.boot();
-        }
-        
-        // 로그인한 유저 알림
-        gameFrame.appendMessageToTextPane(this.userId + " login", Color.BLUE);
-        gameFrame.appendMessageToTextPane("login users : " + this.loginUsers.toString(), Color.BLUE);
-
-        gameFrame.attachUserFrame(this.loginUsers);
+        // 로비창 활성화
+        LobbyFrame lobbyFrame = LobbyFrame.getInstance();
+        lobbyFrame.boot();
     }
 }
