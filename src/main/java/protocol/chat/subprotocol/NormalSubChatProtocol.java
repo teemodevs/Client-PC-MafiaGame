@@ -5,6 +5,10 @@ import java.awt.Color;
 import client.frame.game.GameFrame;
 import protocol.chat.ChatProtocol;
 
+/**
+ * 서버 to 클라 : 다른 유저가 채팅한 정보를 알림 (전체 전송)
+ * 클라 to 서버 : 해당 유저가 채팅을 보냄
+ */
 public class NormalSubChatProtocol extends ChatProtocol {
     private String message;
     private String sender;

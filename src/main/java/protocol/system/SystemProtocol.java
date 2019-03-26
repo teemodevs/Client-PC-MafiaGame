@@ -7,6 +7,9 @@ import protocol.Protocol;
 import protocol.ProtocolType;
 import protocol.system.subprotocol.*;
 
+/**
+ * 시스템 관련 프로토콜 추상화 클래스
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
@@ -17,7 +20,8 @@ import protocol.system.subprotocol.*;
         @JsonSubTypes.Type(value = RoomMasterSubSystemProtocol.class, 		name = "ROOMMASTER"),
         @JsonSubTypes.Type(value = StartgameFailedSubSystemProtocol.class, 	name = "STARTGAMEFAIL"),
         @JsonSubTypes.Type(value = GameRoomListSubSystemProtocol.class, 	name = "GAMEROOMLIST"),
-        @JsonSubTypes.Type(value = JoinGameRoomSubSystemProtocol.class, 	name = "JOINGAMEROOM")
+        @JsonSubTypes.Type(value = JoinGameRoomSubSystemProtocol.class, 	name = "JOINGAMEROOM"),
+        @JsonSubTypes.Type(value = GameRoomMakeSubSystemProtocol.class, 	name = "MAKEGAMEROOM")
 })
 public abstract class SystemProtocol implements Protocol {
     @Override

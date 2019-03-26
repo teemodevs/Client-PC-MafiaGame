@@ -16,14 +16,16 @@ import client.frame.action.CloseWindowWithLogoutAction;
 import game.User;
 import protocol.Protocol;
 import protocol.system.subprotocol.GameRoomListSubSystemProtocol;
+import protocol.system.subprotocol.GameRoomMakeSubSystemProtocol;
 
 /**
  * 로그인에 성공하고 대기실 화면. 서버에 만들어진 GameRoom의 리스트를 확인할 수 있음
- **/
+ */
 public class LobbyFrame extends JFrame {
-	private JPanel mainPanel; // 메인 패널
-	private JList<Integer> gameRoomList;
-	private JButton makeGameRoomButton;
+	private JPanel 						mainPanel; 			// 메인 패널
+	private JList<Integer> 				gameRoomList;		// 접속 가능한 GameRoom 리스트
+	private DefaultListModel<Integer> 	listModel; 			// GameRoom 리스트에 들어갈 ListModel
+	private JButton 					makeGameRoomButton;	// 방만들기 버튼
 
 	private static LobbyFrame lobbyFrame = new LobbyFrame();
 
@@ -33,10 +35,14 @@ public class LobbyFrame extends JFrame {
 	
 	private LobbyFrame() {
 		this.mainPanel = new JPanel();
-		this.gameRoomList = new JList<>();
+		listModel = new DefaultListModel<>();
+		this.gameRoomList = new JList<>(listModel);
 		this.makeGameRoomButton = new JButton("방만들기");
 	}
 
+	/**
+	 * 로그인 성공시 수행, LobbyFrame을 실제로 띄움
+	 */
 	public void boot() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,36 +54,46 @@ public class LobbyFrame extends JFrame {
 		mainPanel.setLayout(null);
 		setContentPane(mainPanel);
 
+		this.updateGameRoomListRequest();
 		gameRoomList.setBackground(Color.WHITE);
 		gameRoomList.setBounds(100, 100, 100, 100);
 		mainPanel.add(gameRoomList);
 
-		this.updateGameRoomList();
+		makeGameRoomButton.setBounds(100, 80, 100, 20);
+		makeGameRoomButton.addActionListener(new GameRoomMakeAction());
+		mainPanel.add(makeGameRoomButton);
 		
 		this.addWindowListener(new CloseWindowWithLogoutAction());
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}
 
-	public void updateGameRoomList() {
+	/**
+	 * 서버에 접속 가능한 GameRoom 리스트를 요청
+	 */
+	public void updateGameRoomListRequest() {
 		Protocol protocol = new GameRoomListSubSystemProtocol();
 		User.getInstance().sendProtocol(protocol);
 	}
 
-	public void setGameRoomList(List<Integer> gameRoomNumberList) {
+	/**
+	 * 서버로부터 받은, 접속 가능한 GameRoom 리스트를 바탕으로 List 업데이트
+	 * @param gameRoomNumberList List<Integer> 접속 가능한 GameRoom의 방 번호 배열
+	 */
+	public void updateGameRoomList(List<Integer> gameRoomNumberList) {
 		System.out.println("LobbyFrame.setGameRoom()");
-		DefaultListModel<Integer> listModel = new DefaultListModel<>();
+		listModel.removeAllElements();
 		listModel.addAll(gameRoomNumberList);
-		gameRoomList = new JList<Integer>(listModel);
 	}
 
+	/**
+	 * 방 만들기 버튼 액션 : 서버에 방을 만들어달라고 요청
+	 */
 	class GameRoomMakeAction implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+			Protocol protocol = new GameRoomMakeSubSystemProtocol();
+			User.getInstance().sendProtocol(protocol);
 		}
-		
 	} 
 }

@@ -1,5 +1,8 @@
 package exception.message;
 
+/**
+ * Message Write 실패 시 오류
+ */
 public class MessageWriteFailureException extends RuntimeException {
     private String message;
 

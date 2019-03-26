@@ -10,6 +10,9 @@ import protocol.chat.subprotocol.MafiaSubChatProtocol;
 import protocol.chat.subprotocol.NormalSubChatProtocol;
 import protocol.chat.subprotocol.SystemSubChatProtocol;
 
+/**
+ * 채팅 관련 프로토콜 추상화 클래스
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({

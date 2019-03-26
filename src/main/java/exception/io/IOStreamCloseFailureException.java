@@ -1,5 +1,8 @@
 package exception.io;
 
+/**
+ * IO Stream Close 실패 시 오류
+ */
 public class IOStreamCloseFailureException extends RuntimeException {
     private String message;
 

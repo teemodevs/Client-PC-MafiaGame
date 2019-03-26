@@ -5,6 +5,9 @@ import game.job.civil.Doctor;
 import game.job.civil.Police;
 import game.job.mafia.Mafia;
 
+/**
+ * 직업 Factory
+ */
 public class JobFactory {
     public static Job create(String jobName) {
         switch(JobEnum.valueOf(jobName.toUpperCase())) {

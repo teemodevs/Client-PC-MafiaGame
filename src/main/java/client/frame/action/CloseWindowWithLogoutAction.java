@@ -9,7 +9,7 @@ import client.frame.game.GameFrame;
 import game.User;
 
 /**
- * 윈도우창 닫기 액션 로그아웃 처리 및 프로그램 종료
+ * 윈도우창 닫기 액션 : 로그아웃 요청 및 프로그램 종료
  **/
 public class CloseWindowWithLogoutAction extends WindowAdapter {
 	@Override

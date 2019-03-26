@@ -7,12 +7,12 @@ import game.User;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * 서버와 접속을 담당하는 클래스
+ */
 public class ServerConnector {
-    // 서버 접속 IP
-    private final static String IP_ADDRESS = "127.0.0.1";
-
-    // 서버 접속 포트
-    private final static int PORT = 30000;
+    private final static String IP_ADDRESS = "127.0.0.1"; 	// 서버 접속 IP
+    private final static int 	PORT 	   = 30000;    		// 서버 접속 포트
 
     public void connect() {
         User user = User.getInstance();
@@ -22,9 +22,8 @@ public class ServerConnector {
     }
 
     /**
-     * create Socket
-     *
-     * @return Socket
+     * 소켓을 생성하여 반환
+     * @return socket Socket
      */
     private Socket createSocket() {
         try {

@@ -26,26 +26,26 @@ import game.User;
 
 /**
  * LobbyFrame에서 방을 선택하고 방에 들어왔을 때 게임창
- **/
+ */
 public class GameFrame extends JFrame {
 	private static final int MAX_USERS = 8;
 	private static GameFrame gameFrame = new GameFrame();
 
 	/**
 	 * 메인 패널
-	 **/
-	private JPanel mainPanel; // 메인 패널
-	private JLabel centerLabel; // GameFrame 중앙 라벨
-	private List<UserFrame> userFrameList; // 유저 패널 리스트
-	private JButton startButton; // 시작 버튼
+	 */
+	private JPanel 			mainPanel; 			// 메인 패널
+	private JLabel 			centerLabel; 		// GameFrame 중앙 라벨
+	private List<UserFrame> userFrameList; 		// 유저 패널 리스트
+	private JButton 		startButton; 		// 시작 버튼
 
 	/**
 	 * 채팅창
-	 **/
-	private JTextField inputChatTextField; // 채팅입력창
-	private JScrollPane scrollPane; // 채팅창 스크롤 바
-	private JButton sendMessageButton; // 채팅창 전송버튼
-	private JTextPane textPane; // 채팅창
+	 */
+	private JTextField 		inputChatTextField; // 채팅입력창
+	private JScrollPane 	scrollPane; 		// 채팅창 스크롤 바
+	private JButton 		sendMessageButton; 	// 채팅창 전송버튼
+	private JTextPane 		textPane; 			// 채팅창
 
 	private GameFrame() {
 		mainPanel = new JPanel();
@@ -61,7 +61,7 @@ public class GameFrame extends JFrame {
 	/**
 	 * 게임프레임 반환
 	 * @return gameFrame GameFrame 게임프레임
-	 **/
+	 */
 	public static GameFrame getInstance() {
 		return gameFrame;
 	}
@@ -69,7 +69,7 @@ public class GameFrame extends JFrame {
 	/**
 	 * 게임프레임 메인 패널 반환
 	 * @return mainPanel JPanel 게임프레임 메인 패널
-	 **/
+	 */
 	public JPanel getMainPanel() {
 		return this.mainPanel;
 	}
@@ -77,7 +77,7 @@ public class GameFrame extends JFrame {
 	/**
 	 * 채팅창에 메시지를 출력
 	 * @param message String 출력할 메시지
-	 **/
+	 */
 	public void appendMessageToTextPane(String message, Color color) {
 		SimpleAttributeSet simpleAttributeSet = new SimpleAttributeSet();
 		simpleAttributeSet.addAttribute(StyleConstants.Foreground, color);
@@ -93,7 +93,7 @@ public class GameFrame extends JFrame {
 
 	/**
 	 * 로그인 성공 시 실행, GameFrame 을 띄움
-	 **/
+	 */
 	public void boot() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -144,6 +144,10 @@ public class GameFrame extends JFrame {
 		setVisible(true);
 	}
 
+	/**
+	 * GameFrame에서 현재 유저가 할당되지 않은, 비활성하된 UserFrame을 반환
+	 * @return userFrmae UserFrame 비활성화된 UserFrame
+	 */
 	private UserFrame getEmptyUserFrame() {
 		for (UserFrame userFrame : this.userFrameList) {
 			if (!userFrame.isLogined())
@@ -154,9 +158,8 @@ public class GameFrame extends JFrame {
 
 	/**
 	 * 유저가 새로 로그인할 때 UserFrame에 할당 후 활성화
-	 * 
 	 * @param loginUserIdList String 서버 기준에서 접속한 유저의 id List
-	 **/
+	 */
 	public void attachUserFrame(List<String> loginUserIdList) {
 		// 클라이언트 기준 접속한 유저의 id List
 		List<String> clientUserIdList = new ArrayList<>();
@@ -182,9 +185,8 @@ public class GameFrame extends JFrame {
 
 	/**
 	 * 특정 유저가 로그아웃하면 해당 유저 자리에 있는 UserFrame을 다른 유저가 입장 시 할당될 수 있게 비활성화
-	 * 
 	 * @param logoutUserId String 로그아웃 한 유저의 id
-	 **/
+	 */
 	public void detachUserFrame(String logoutUserId) {
 		for (UserFrame userFrame : this.userFrameList) {
 			if (userFrame.isLogined() && userFrame.getIdLabel().getText().equals(logoutUserId)) {
@@ -198,7 +200,7 @@ public class GameFrame extends JFrame {
 
 	/**
 	 * 방장이 바뀐 경우 버튼 추가
-	 * **/
+	 */
 	public void addStartButton() {
 		/* 시작 버튼 설정 */
 		this.startButton = new JButton("start");
@@ -216,13 +218,18 @@ public class GameFrame extends JFrame {
 		repaint();
 	}
 	
+	/**
+	 * 시작버튼 활성/비활성화
+	 * 활성화 시 : 방장으로 할당되어 있는경우 && 게임이 시작하지 않은 경우
+	 * @param visible boolean 활성화 여부
+	 */
 	public void setVisibleStartButton(boolean visible) {
 		this.startButton.setVisible(visible);
 	}
 	
 	/**
-	 * 메시지 전송 액션 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
-	 **/
+	 * 메시지 전송 액션 : 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
+	 */
 	class SubmitMessageAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -232,7 +239,7 @@ public class GameFrame extends JFrame {
 	
 	/**
 	 * 서버에 게임 시작 요청
-	 **/
+	 */
 	class StartGameAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {

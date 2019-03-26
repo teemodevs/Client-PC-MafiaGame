@@ -6,6 +6,10 @@ import client.frame.game.GameFrame;
 import game.User;
 import protocol.system.SystemProtocol;
 
+/**
+ * 서버 to 클라 : 해당 유저에게 방장이라는 것을 알림
+ * 클라 to 서버 : -
+ */
 public class RoomMasterSubSystemProtocol extends SystemProtocol {
 	private String masterId;
 	
