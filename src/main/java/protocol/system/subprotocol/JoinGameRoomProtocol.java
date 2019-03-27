@@ -1,8 +1,5 @@
 package protocol.system.subprotocol;
 
-import java.awt.Color;
-import java.util.List;
-
 import client.frame.LobbyFrame;
 import client.frame.game.GameFrame;
 import exception.game.JoinGameRoomFailureException;
@@ -12,19 +9,17 @@ import protocol.system.SystemProtocol;
  * 서버 to 클라 : 특정 유저에게 방에 입장했다고 알림
  * 클라 to 서버 : 특정 유저가 방에 입장하는 것을 요청
  */
-public class JoinGameRoomSubSystemProtocol extends SystemProtocol {
+public class JoinGameRoomProtocol extends SystemProtocol {
 	private String 			userId;				// 방에 참가하는 유저의 id
 	private int 			gameRoomNumber;		// 참가하려는 방의 번호
 	private boolean 		isJoinSuccess;		// 참가 성공 여부
 	private String 			joinFailedReason;	// 참가 실패 시 사유
-	private List<String> 	loginUsers; 		// 해당 방에 이미 로그인한 유저의 리스트
-	
 	
 	public String getUserId() {
 		return userId;
 	}
 	
-	public JoinGameRoomSubSystemProtocol setUserId(String userId) {
+	public JoinGameRoomProtocol setUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
@@ -33,7 +28,7 @@ public class JoinGameRoomSubSystemProtocol extends SystemProtocol {
 		return gameRoomNumber;
 	}
 
-	public JoinGameRoomSubSystemProtocol setGameRoomNumber(int gameRoomNumber) {
+	public JoinGameRoomProtocol setGameRoomNumber(int gameRoomNumber) {
 		this.gameRoomNumber = gameRoomNumber;
 		return this;
 	}
@@ -42,7 +37,7 @@ public class JoinGameRoomSubSystemProtocol extends SystemProtocol {
 		return isJoinSuccess;
 	}
 
-	public JoinGameRoomSubSystemProtocol setJoinSuccess(boolean isJoinSuccess) {
+	public JoinGameRoomProtocol setJoinSuccess(boolean isJoinSuccess) {
 		this.isJoinSuccess = isJoinSuccess;
 		return this;
 	}
@@ -51,17 +46,8 @@ public class JoinGameRoomSubSystemProtocol extends SystemProtocol {
 		return joinFailedReason;
 	}
 
-	public JoinGameRoomSubSystemProtocol setJoinFailedReason(String joinFailedReason) {
+	public JoinGameRoomProtocol setJoinFailedReason(String joinFailedReason) {
 		this.joinFailedReason = joinFailedReason;
-		return this;
-	}
-
-	public List<String> getLoginUsers() {
-		return loginUsers;
-	}
-
-	public JoinGameRoomSubSystemProtocol setLoginUsers(List<String> loginUsers) {
-		this.loginUsers = loginUsers;
 		return this;
 	}
 
@@ -81,10 +67,10 @@ public class JoinGameRoomSubSystemProtocol extends SystemProtocol {
         GameFrame gameFrame = GameFrame.getInstance();
         gameFrame.boot();
         
-        gameFrame.appendMessageToTextPane(this.userId + " login", Color.BLUE);
-        gameFrame.appendMessageToTextPane("login users : " + this.loginUsers.toString(), Color.BLUE);
+        //gameFrame.appendMessageToTextPane(this.userId + " login", Color.BLUE);
+        //gameFrame.appendMessageToTextPane("login users : " + this.loginUsers.toString(), Color.BLUE);
         
-        gameFrame.attachUserFrame(this.loginUsers);
+        //gameFrame.attachUserFrame(this.loginUsers);
     }
     
     

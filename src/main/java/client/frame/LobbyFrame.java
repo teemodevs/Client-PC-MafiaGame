@@ -3,6 +3,8 @@ package client.frame;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -10,13 +12,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import client.frame.action.CloseWindowWithLogoutAction;
 import game.User;
 import protocol.Protocol;
-import protocol.system.subprotocol.GameRoomListSubSystemProtocol;
-import protocol.system.subprotocol.GameRoomMakeSubSystemProtocol;
+import protocol.system.subprotocol.GameRoomListProtocol;
+import protocol.system.subprotocol.GameRoomMakeProtocol;
+import protocol.system.subprotocol.JoinGameRoomProtocol;
 
 /**
  * 로그인에 성공하고 대기실 화면. 서버에 만들어진 GameRoom의 리스트를 확인할 수 있음
@@ -35,7 +39,7 @@ public class LobbyFrame extends JFrame {
 	
 	private LobbyFrame() {
 		this.mainPanel = new JPanel();
-		listModel = new DefaultListModel<>();
+		this.listModel = new DefaultListModel<Integer>();
 		this.gameRoomList = new JList<>(listModel);
 		this.makeGameRoomButton = new JButton("방만들기");
 	}
@@ -57,6 +61,8 @@ public class LobbyFrame extends JFrame {
 		this.updateGameRoomListRequest();
 		gameRoomList.setBackground(Color.WHITE);
 		gameRoomList.setBounds(100, 100, 100, 100);
+		gameRoomList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		gameRoomList.addMouseListener(new GameRoomJoinAction());
 		mainPanel.add(gameRoomList);
 
 		makeGameRoomButton.setBounds(100, 80, 100, 20);
@@ -71,8 +77,8 @@ public class LobbyFrame extends JFrame {
 	/**
 	 * 서버에 접속 가능한 GameRoom 리스트를 요청
 	 */
-	public void updateGameRoomListRequest() {
-		Protocol protocol = new GameRoomListSubSystemProtocol();
+	void updateGameRoomListRequest() {
+		Protocol protocol = new GameRoomListProtocol();
 		User.getInstance().sendProtocol(protocol);
 	}
 
@@ -81,9 +87,9 @@ public class LobbyFrame extends JFrame {
 	 * @param gameRoomNumberList List<Integer> 접속 가능한 GameRoom의 방 번호 배열
 	 */
 	public void updateGameRoomList(List<Integer> gameRoomNumberList) {
-		System.out.println("LobbyFrame.setGameRoom()");
-		listModel.removeAllElements();
-		listModel.addAll(gameRoomNumberList);
+		listModel.clear();
+		for (Integer integer : gameRoomNumberList )
+			listModel.addElement(integer);
 	}
 
 	/**
@@ -92,8 +98,28 @@ public class LobbyFrame extends JFrame {
 	class GameRoomMakeAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Protocol protocol = new GameRoomMakeSubSystemProtocol();
+			Protocol protocol = new GameRoomMakeProtocol();
 			User.getInstance().sendProtocol(protocol);
+		}
+	}
+	
+	/**
+	 * 방 들어가기 액션 (번호더블클릭) : 서버에 방에 접속한다고 요청
+	 */
+	class GameRoomJoinAction extends MouseAdapter {
+		public void mouseClicked(MouseEvent mouseEvent) {
+			JList list = (JList) mouseEvent.getSource();
+	        if (mouseEvent.getClickCount() == 2) {
+	        	// 클릭한 위치에 해당하는 요소의 인덱스
+	            int index = list.locationToIndex(mouseEvent.getPoint());
+	            // 빈칸 클릭이 아닌 경우
+	            if (index != -1) {
+	            	int gameRoomNumber = (int) list.getSelectedValue();
+	            	Protocol protocol = new JoinGameRoomProtocol()
+										.setGameRoomNumber(gameRoomNumber);
+	            	User.getInstance().sendProtocol(protocol);
+	            }
+	        } 
 		}
 	} 
 }

@@ -3,11 +3,11 @@ package game;
 import game.job.Job;
 import message.MessageSenderReceiver;
 import protocol.Protocol;
-import protocol.chat.subprotocol.NormalSubChatProtocol;
-import protocol.game.subprotocol.JobSubGameProtocol;
-import protocol.system.subprotocol.LoginSubSystemProtocol;
-import protocol.system.subprotocol.LogoutSubSystemProtocol;
-import protocol.system.subprotocol.StartgameSubSystemProtocol;
+import protocol.chat.subprotocol.NormalChatProtocol;
+import protocol.game.subprotocol.JobProtocol;
+import protocol.system.subprotocol.LoginProtocol;
+import protocol.system.subprotocol.LogoutProtocol;
+import protocol.system.subprotocol.StartgameProtocol;
 
 import java.net.Socket;
 
@@ -106,7 +106,7 @@ public class User extends Thread {
      * @param password String 로그인을 시도할 password
      */
     public void login(String id, String password) {
-        Protocol protocol = new LoginSubSystemProtocol()
+        Protocol protocol = new LoginProtocol()
                                 .setUserId(id)
                                 .setPassword(password);
         this.userId = id;
@@ -117,7 +117,7 @@ public class User extends Thread {
      * 서버에 로그아웃 요청을 보냄
      */
     public void logout() {
-        Protocol protocol = new LogoutSubSystemProtocol().setUserId(this.userId);
+        Protocol protocol = new LogoutProtocol().setUserId(this.userId);
         this.messageSenderReceiver.sendMessage(protocol);
     }
 
@@ -126,7 +126,7 @@ public class User extends Thread {
      * @param message String 보낼 메시지의 내용(json이 아닌 plain text)
      */
     public void sendMessage(String message) {
-        Protocol protocol = new NormalSubChatProtocol()
+        Protocol protocol = new NormalChatProtocol()
                                 .setSender(this.getUserId())
                                 .setMessage(message);
         this.messageSenderReceiver.sendMessage(protocol);
@@ -136,7 +136,7 @@ public class User extends Thread {
      * (방장 User 전용) 서버에 게임시작 요청
      */
     public void startGame() {
-    	Protocol protocol = new StartgameSubSystemProtocol();
+    	Protocol protocol = new StartgameProtocol();
     	this.messageSenderReceiver.sendMessage(protocol);
     }
     
@@ -144,7 +144,7 @@ public class User extends Thread {
      * 선택한 유저에 대해 직업 행동을 요청
      */
     public void jobAction(String targetUserId) {
-    	Protocol protocol = new JobSubGameProtocol()
+    	Protocol protocol = new JobProtocol()
     							.setTargetUserId(targetUserId);
     	this.messageSenderReceiver.sendMessage(protocol);
     }

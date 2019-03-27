@@ -9,10 +9,10 @@ import java.awt.*;
  * 서버 to 클라 : 모든 유저에게 Phase 변경을 통보
  * 클라 to 서버 : -
  */
-public class PhaseSubGameProtocol extends GameProtocol {
+public class PhaseProtocol extends GameProtocol {
     private String phaseName;
 
-    public PhaseSubGameProtocol setPhaseName(String phaseName) {
+    public PhaseProtocol setPhaseName(String phaseName) {
         this.phaseName = phaseName;
         return this;
     }
