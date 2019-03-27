@@ -1,8 +1,5 @@
 package protocol.system.subprotocol;
 
-import java.awt.Color;
-import java.util.List;
-
 import client.frame.LobbyFrame;
 import client.frame.game.GameFrame;
 import exception.game.JoinGameRoomFailureException;
@@ -17,8 +14,6 @@ public class JoinGameRoomSubSystemProtocol extends SystemProtocol {
 	private int 			gameRoomNumber;		// 참가하려는 방의 번호
 	private boolean 		isJoinSuccess;		// 참가 성공 여부
 	private String 			joinFailedReason;	// 참가 실패 시 사유
-	private List<String> 	loginUsers; 		// 해당 방에 이미 로그인한 유저의 리스트
-	
 	
 	public String getUserId() {
 		return userId;
@@ -56,15 +51,6 @@ public class JoinGameRoomSubSystemProtocol extends SystemProtocol {
 		return this;
 	}
 
-	public List<String> getLoginUsers() {
-		return loginUsers;
-	}
-
-	public JoinGameRoomSubSystemProtocol setLoginUsers(List<String> loginUsers) {
-		this.loginUsers = loginUsers;
-		return this;
-	}
-
     /**
      *  방에 입장 성공 시 클라이언트 화면을 LobbyFrame에서 GameFrame으로 변경
      */
@@ -81,10 +67,10 @@ public class JoinGameRoomSubSystemProtocol extends SystemProtocol {
         GameFrame gameFrame = GameFrame.getInstance();
         gameFrame.boot();
         
-        gameFrame.appendMessageToTextPane(this.userId + " login", Color.BLUE);
-        gameFrame.appendMessageToTextPane("login users : " + this.loginUsers.toString(), Color.BLUE);
+        //gameFrame.appendMessageToTextPane(this.userId + " login", Color.BLUE);
+        //gameFrame.appendMessageToTextPane("login users : " + this.loginUsers.toString(), Color.BLUE);
         
-        gameFrame.attachUserFrame(this.loginUsers);
+        //gameFrame.attachUserFrame(this.loginUsers);
     }
     
     

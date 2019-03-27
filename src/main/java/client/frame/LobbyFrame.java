@@ -3,6 +3,8 @@ package client.frame;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -10,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import client.frame.action.CloseWindowWithLogoutAction;
@@ -17,6 +20,7 @@ import game.User;
 import protocol.Protocol;
 import protocol.system.subprotocol.GameRoomListSubSystemProtocol;
 import protocol.system.subprotocol.GameRoomMakeSubSystemProtocol;
+import protocol.system.subprotocol.JoinGameRoomSubSystemProtocol;
 
 /**
  * 로그인에 성공하고 대기실 화면. 서버에 만들어진 GameRoom의 리스트를 확인할 수 있음
@@ -57,6 +61,8 @@ public class LobbyFrame extends JFrame {
 		this.updateGameRoomListRequest();
 		gameRoomList.setBackground(Color.WHITE);
 		gameRoomList.setBounds(100, 100, 100, 100);
+		gameRoomList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		gameRoomList.addMouseListener(new GameRoomJoinAction());
 		mainPanel.add(gameRoomList);
 
 		makeGameRoomButton.setBounds(100, 80, 100, 20);
@@ -94,6 +100,25 @@ public class LobbyFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			Protocol protocol = new GameRoomMakeSubSystemProtocol();
 			User.getInstance().sendProtocol(protocol);
+		}
+	}
+	
+	/**
+	 * 방 들어가기 액션 (번호더블클릭) : 서버에 방에 접속한다고 요청
+	 */
+	class GameRoomJoinAction extends MouseAdapter {
+		public void mouseClicked(MouseEvent mouseEvent) {
+			JList list = (JList) mouseEvent.getSource();
+	        if (mouseEvent.getClickCount() == 2) {
+	        	// 클릭한 위치에 해당하는 요소의 인덱스
+	            int index = list.locationToIndex(mouseEvent.getPoint());
+	            // 빈칸 클릭이 아닌 경우
+	            if (index != -1) {
+	            	int gameRoomNumber = (int) list.getSelectedValue();
+	            	Protocol protocol = new JoinGameRoomSubSystemProtocol().setGameRoomNumber(gameRoomNumber);
+	            	User.getInstance().sendProtocol(protocol);
+	            }
+	        } 
 		}
 	} 
 }
