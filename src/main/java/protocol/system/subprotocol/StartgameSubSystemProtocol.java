@@ -12,6 +12,10 @@ import protocol.system.SystemProtocol;
  * 클라 to 서버 : 게임시작요청(RoomMaster만 요청 가능)
  */
 public class StartgameSubSystemProtocol extends SystemProtocol {
+	
+	/**
+	 * 게임시작 요청
+	 */
 	@Override
 	public void execute() {
 		System.out.println(this.getClass().getSimpleName() + ".execute()");

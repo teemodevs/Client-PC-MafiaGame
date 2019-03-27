@@ -23,6 +23,9 @@ public class StartgameFailedSubSystemProtocol extends SystemProtocol {
 		return this;
 	}
 	
+	/**
+	 * 게임시작 불가 메시지 출력
+	 */
     @Override
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

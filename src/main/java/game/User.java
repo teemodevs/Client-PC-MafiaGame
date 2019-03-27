@@ -12,7 +12,7 @@ import protocol.system.subprotocol.StartgameSubSystemProtocol;
 import java.net.Socket;
 
 /**
- * 유저 클래스 
+ * 소켓 접속 유저 클래스 
  */
 public class User extends Thread {
     private static User user = new User();

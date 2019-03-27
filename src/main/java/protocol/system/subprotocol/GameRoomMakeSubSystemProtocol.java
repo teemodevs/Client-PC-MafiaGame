@@ -20,6 +20,9 @@ public class GameRoomMakeSubSystemProtocol extends SystemProtocol {
 		this.newGameRoomNumber = newGameRoomNumber;
 	}
 	
+    /**
+     * 만들어진 게임방의 방번호를 받아서 입장을 요청 
+     */
     @Override
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

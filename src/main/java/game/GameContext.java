@@ -5,7 +5,7 @@ package game;
  */
 public class GameContext {
 	private static GameContext gameContext = new GameContext();
-	private boolean isPlaying;
+	private boolean isPlaying; // 현재 플레이 중 여부
 	
 	public GameContext() {}
 	

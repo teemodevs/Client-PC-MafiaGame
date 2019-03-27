@@ -51,6 +51,9 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         return this;
     }
 	
+    /**
+     * 로그인 창을 비활성화 시키고 Lobby Frame으로 넘어감
+     */
     @Override
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

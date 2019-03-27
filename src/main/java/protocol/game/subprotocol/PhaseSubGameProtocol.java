@@ -21,6 +21,9 @@ public class PhaseSubGameProtocol extends GameProtocol {
         return this.phaseName;
     }
 
+    /**
+     * 변경된 Phase에 맞게 클라이언트 화면 구성
+     */
     @Override
     public void execute() {
         GameFrame gameFrame = GameFrame.getInstance();

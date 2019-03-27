@@ -24,7 +24,7 @@ public class RoomMasterSubSystemProtocol extends SystemProtocol {
 	
 	/**
 	 * 방장 선정 및 start button을 게임 프레임에 붙임
-	 **/
+	 */
     @Override
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

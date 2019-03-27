@@ -20,7 +20,10 @@ public class LogoutSubSystemProtocol extends SystemProtocol {
         this.userId = userId;
         return this;
     }
-
+    
+    /**
+     * 로그아웃 결과를 클라이언트에 반영
+     */
     @Override
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

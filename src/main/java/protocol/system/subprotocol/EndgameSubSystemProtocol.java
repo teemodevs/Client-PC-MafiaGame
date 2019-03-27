@@ -11,6 +11,10 @@ import java.awt.*;
  * 클라 to 서버 : -
  */
 public class EndgameSubSystemProtocol extends SystemProtocol {
+	
+    /**
+     * 게임 종료 시 클라이언트 화면 수정, 방장의 경우 버튼이 보임
+     */
     @Override
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

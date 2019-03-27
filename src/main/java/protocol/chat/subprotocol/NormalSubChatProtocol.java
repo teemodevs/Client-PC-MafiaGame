@@ -31,6 +31,9 @@ public class NormalSubChatProtocol extends ChatProtocol {
         return this;
     }
 
+    /**
+     * 받은 메시지를 채팅창에 붙임
+     */
     @Override
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

@@ -20,6 +20,9 @@ public class JobAllocationSubGameProtocol extends GameProtocol {
         return this;
     }
 
+    /**
+     * 서버로부터 알림을 받은 직업을 현재 User에게 할당
+     */
     @Override
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

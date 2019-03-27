@@ -21,6 +21,9 @@ public class GameRoomListSubSystemProtocol extends SystemProtocol {
 		this.gameRoomNumberList = gameRoomNumberList;
 	}
 	
+    /**
+     * 로비에서 접속 가능한 게임방의 리스트를 업데이트
+     */
     @Override
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
