@@ -5,10 +5,14 @@ import protocol.game.GameProtocol;
 
 import java.awt.*;
 
-public class PhaseSubGameProtocol extends GameProtocol {
+/**
+ * 서버 to 클라 : 모든 유저에게 Phase 변경을 통보
+ * 클라 to 서버 : -
+ */
+public class PhaseProtocol extends GameProtocol {
     private String phaseName;
 
-    public PhaseSubGameProtocol setPhaseName(String phaseName) {
+    public PhaseProtocol setPhaseName(String phaseName) {
         this.phaseName = phaseName;
         return this;
     }
@@ -17,6 +21,9 @@ public class PhaseSubGameProtocol extends GameProtocol {
         return this.phaseName;
     }
 
+    /**
+     * 변경된 Phase에 맞게 클라이언트 화면 구성
+     */
     @Override
     public void execute() {
         GameFrame gameFrame = GameFrame.getInstance();

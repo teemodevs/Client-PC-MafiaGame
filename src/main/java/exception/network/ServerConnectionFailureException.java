@@ -1,5 +1,8 @@
 package exception.network;
 
+/**
+ * Server Connection 실패 시 오류
+ */
 public class ServerConnectionFailureException extends RuntimeException {
     private String message;
 

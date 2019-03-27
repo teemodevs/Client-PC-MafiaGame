@@ -10,6 +10,9 @@ import protocol.ProtocolType;
 
 import java.io.IOException;
 
+/**
+ * Message와 Protocol 객체 변환 클래스
+ */
 public class MessageConverter {
     private ObjectMapper objectMapper;
 
@@ -17,6 +20,11 @@ public class MessageConverter {
         this.objectMapper = new ObjectMapper();
     }
 
+    /**
+     * Message 객체를 Protocol 객체료 변환 (Deserialization)
+     * @param message Message Deserialize 할 JSON String을 가지고 있는 Message 객체
+     * @return protocol Protocol Message를 Deserialize하여 생성된 Protocol 객체 
+     */
     public Protocol messageToProtocol(Message message) {
         try {
             JsonNode protocolJsonNode = objectMapper.readTree(message.getMessage());
@@ -30,6 +38,11 @@ public class MessageConverter {
         }
     }
 
+    /**
+     * Protocol 객체를 Message 객체료 변환 (Serialization)
+     * @param protocol Protocol Serialize 할 Protocol 객체
+     * @return message Message Protocol을 Serialize하여 생성된 JSON String을 가지고 있는 Message 객체 
+     */
     public Message protocolToMessage(Protocol protocol) {
         try {
             return new Message(objectMapper.writeValueAsString(protocol));

@@ -5,6 +5,9 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+/**
+ * 파일, 이미지 등 리소스 로더 클래스
+ */
 public class ResourceLoader {
 	public static final String RESOURCE_ROOT_PATH = "src/main/resources/";
 

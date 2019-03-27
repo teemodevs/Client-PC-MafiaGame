@@ -10,11 +10,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ * 소켓을 통해 서버와 통신하는 클래스 
+ */
 public class MessageSenderReceiver {
-    private Socket socket;
-
-    private PrintWriter out;
-    private BufferedReader in;
+    private Socket 			socket;
+    private PrintWriter 	out;
+    private BufferedReader 	in;
 
     public MessageSenderReceiver(Socket socket) {
         this.socket = socket;
@@ -66,5 +68,4 @@ public class MessageSenderReceiver {
             throw new IOStreamCloseFailureException("IO Stream Close Failed");
         }
     }
-
 }

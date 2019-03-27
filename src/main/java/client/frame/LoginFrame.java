@@ -10,24 +10,29 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * 맨 처음 애플리케이션을 켰을 때 로그인 하는 창
+ */
 public class LoginFrame extends JFrame {
     private static LoginFrame loginFrame = new LoginFrame();
 
-    private LoginFrame(){
+    private JPanel 			contentPanel;	// 메인 프레임
+    private JTextField 		idTextField;	// ID 입력창
+    private JPasswordField 	pwTextField;	// PW 입력창
+    
+    private LoginFrame() {
         this.contentPanel = new JPanel();
-        this.idTextField = new JTextField();
-        this.pwTextField = new JPasswordField();
+        this.idTextField  = new JTextField();
+        this.pwTextField  = new JPasswordField();
     }
 
     public static LoginFrame getInstance() {
         return loginFrame;
     }
 
-    private JPanel contentPanel;       // 메인 프레임
-
-    private JTextField idTextField;     // ID 입력창
-    private JPasswordField pwTextField; // PW 입력창
-
+    /**
+     * 소켓 연결 성공 후 수행, LoginFrame을 띄움 
+     */
     public void boot() {
         this.floatLoginFrame();
         this.appendIdTextField();
@@ -36,7 +41,9 @@ public class LoginFrame extends JFrame {
         setVisible(true);
     }
 
-    // 로그인 창 띄움
+    /**
+     * 로그인 창 띄움 
+     */
     private void floatLoginFrame() {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,7 +61,9 @@ public class LoginFrame extends JFrame {
         contentPanel.add(titleLabel);
     }
 
-    // id 입력 텍스트 필드 붙임
+    /**
+     * id 입력 텍스트 필드 붙임
+     */
     private void appendIdTextField() {
         JLabel idLabel = new JLabel(ResourceLoader.getImageIconResource("img/id.png"));
         idLabel.setBounds(64, 140, 90, 43);
@@ -69,7 +78,9 @@ public class LoginFrame extends JFrame {
         contentPanel.add(idTextField);
     }
 
-    // pw 입력 텍스트 필드 붙임
+    /**
+     * PW 입력 텍스트 필드 붙임
+     */
     private void appendPwTextField() {
         JLabel passwordLabel = new JLabel(ResourceLoader.getImageIconResource("img/password.png"));
         passwordLabel.setBounds(18, 190, 177, 43);
@@ -84,6 +95,9 @@ public class LoginFrame extends JFrame {
         contentPanel.add(pwTextField);
     }
 
+    /**
+     * 로그인 버튼 붙임
+     */
     private void appendLoginButton() {
         // 로그인 버튼
         JButton loginButton = new JButton(ResourceLoader.getImageIconResource("img/login.png"));
@@ -93,20 +107,19 @@ public class LoginFrame extends JFrame {
         loginButton.setBorderPainted(false);
         contentPanel.add(loginButton);
 
-        ConnectAction action = new ConnectAction();
+        LoginButtonAction action = new LoginButtonAction();
         loginButton.addActionListener(action);
     }
 
-    private class ConnectAction implements ActionListener {
+    /**
+     * 로그인 버튼 액션 : 사용자가 입력한 값을 바탕으로 서버에 로그인 요청
+     */
+    private class LoginButtonAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent arg0) {
-
             String id       = idTextField.getText();
             String password = String.valueOf(pwTextField.getPassword());
             User.getInstance().login(id, password);
-
         }
     }
-
-
 }
