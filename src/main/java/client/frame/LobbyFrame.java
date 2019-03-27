@@ -39,7 +39,7 @@ public class LobbyFrame extends JFrame {
 	
 	private LobbyFrame() {
 		this.mainPanel = new JPanel();
-		listModel = new DefaultListModel<>();
+		this.listModel = new DefaultListModel<Integer>();
 		this.gameRoomList = new JList<>(listModel);
 		this.makeGameRoomButton = new JButton("방만들기");
 	}
@@ -77,7 +77,7 @@ public class LobbyFrame extends JFrame {
 	/**
 	 * 서버에 접속 가능한 GameRoom 리스트를 요청
 	 */
-	public void updateGameRoomListRequest() {
+	void updateGameRoomListRequest() {
 		Protocol protocol = new GameRoomListProtocol();
 		User.getInstance().sendProtocol(protocol);
 	}
@@ -87,9 +87,9 @@ public class LobbyFrame extends JFrame {
 	 * @param gameRoomNumberList List<Integer> 접속 가능한 GameRoom의 방 번호 배열
 	 */
 	public void updateGameRoomList(List<Integer> gameRoomNumberList) {
-		System.out.println("LobbyFrame.setGameRoom()");
-		listModel.removeAllElements();
-		listModel.addAll(gameRoomNumberList);
+		listModel.clear();
+		for (Integer integer : gameRoomNumberList )
+			listModel.addElement(integer);
 	}
 
 	/**
@@ -115,7 +115,8 @@ public class LobbyFrame extends JFrame {
 	            // 빈칸 클릭이 아닌 경우
 	            if (index != -1) {
 	            	int gameRoomNumber = (int) list.getSelectedValue();
-	            	Protocol protocol = new JoinGameRoomProtocol().setGameRoomNumber(gameRoomNumber);
+	            	Protocol protocol = new JoinGameRoomProtocol()
+										.setGameRoomNumber(gameRoomNumber);
 	            	User.getInstance().sendProtocol(protocol);
 	            }
 	        } 

@@ -11,14 +11,14 @@ import protocol.system.SystemProtocol;
  * 클라 to 서버 : 현재 게임방에 접속 유저의 리스트를 요청
  */
 public class GameRoomUserListProtocol extends SystemProtocol {
-private List<Integer> userIdList;
+private List<String> userIdList;
 	
-	public List<Integer> getUserIdList() {
+	public List<String> getUserIdList() {
 		return userIdList;
 	}
 
 
-	public void setUserIdList(List<Integer> userIdList) {
+	public void setUserIdList(List<String> userIdList) {
 		this.userIdList = userIdList;
 	}
 	
@@ -29,5 +29,6 @@ private List<Integer> userIdList;
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
         //GameFrame에서 User Id List에 따른 UserFrame 업데이트
+		GameFrame.getInstance().attachUserFrame(this.userIdList);
     }
 }
