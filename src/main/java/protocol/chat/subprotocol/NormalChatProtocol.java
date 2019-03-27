@@ -9,7 +9,7 @@ import protocol.chat.ChatProtocol;
  * 서버 to 클라 : 다른 유저가 채팅한 정보를 알림 (전체 전송)
  * 클라 to 서버 : 해당 유저가 채팅을 보냄
  */
-public class NormalSubChatProtocol extends ChatProtocol {
+public class NormalChatProtocol extends ChatProtocol {
     private String message;
     private String sender;
 
@@ -17,7 +17,7 @@ public class NormalSubChatProtocol extends ChatProtocol {
         return message;
     }
 
-    public NormalSubChatProtocol setMessage(String message) {
+    public NormalChatProtocol setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -26,7 +26,7 @@ public class NormalSubChatProtocol extends ChatProtocol {
         return sender;
     }
 
-    public NormalSubChatProtocol setSender(String sender) {
+    public NormalChatProtocol setSender(String sender) {
         this.sender = sender;
         return this;
     }

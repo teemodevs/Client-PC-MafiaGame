@@ -13,10 +13,10 @@ import protocol.game.subprotocol.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = JobSubGameProtocol.class,    name = "JOB"),
-        @JsonSubTypes.Type(value = PhaseSubGameProtocol.class,  name = "PHASE"),
-        @JsonSubTypes.Type(value = ResultSubGameProtocol.class, name = "RESULT"),
-        @JsonSubTypes.Type(value = JobAllocationSubGameProtocol.class,  name = "JOBALLOCATION")
+        @JsonSubTypes.Type(value = JobProtocol.class,    name = "JOB"),
+        @JsonSubTypes.Type(value = PhaseProtocol.class,  name = "PHASE"),
+        @JsonSubTypes.Type(value = ResultProtocol.class, name = "RESULT"),
+        @JsonSubTypes.Type(value = JobAllocationProtocol.class,  name = "JOBALLOCATION")
 })
 public abstract class GameProtocol implements Protocol {
     @Override

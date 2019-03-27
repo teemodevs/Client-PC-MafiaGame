@@ -10,7 +10,7 @@ import protocol.system.SystemProtocol;
  * 서버 to 클라 : 현재 게임방에 접속 유저의 리스트를 반환
  * 클라 to 서버 : 현재 게임방에 접속 유저의 리스트를 요청
  */
-public class GameRoomUserListSubSystemProtocol extends SystemProtocol {
+public class GameRoomUserListProtocol extends SystemProtocol {
 private List<Integer> userIdList;
 	
 	public List<Integer> getUserIdList() {

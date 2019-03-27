@@ -9,7 +9,7 @@ import protocol.system.SystemProtocol;
  * 서버 to 클라 : 방장에게 게임을 시작할 수 없다고 알림
  * 클라 to 서버 : -
  */
-public class StartgameFailedSubSystemProtocol extends SystemProtocol {
+public class StartgameFailedProtocol extends SystemProtocol {
 	private String reason;
 	
 	
@@ -18,7 +18,7 @@ public class StartgameFailedSubSystemProtocol extends SystemProtocol {
 	}
 
 
-	public StartgameFailedSubSystemProtocol setReason(String reason) {
+	public StartgameFailedProtocol setReason(String reason) {
 		this.reason = reason;
 		return this;
 	}

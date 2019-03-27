@@ -9,7 +9,7 @@ import protocol.system.SystemProtocol;
  * 서버 to 클라 : 다른 유저가 로그인 한 정보를 알림
  * 클라 to 서버 : 해당 유저가 로그인을 요청
  */
-public class LoginSubSystemProtocol extends SystemProtocol {
+public class LoginProtocol extends SystemProtocol {
     private String userId;
     private String password;
     private boolean isLoginSuccess;
@@ -19,7 +19,7 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         return userId;
     }
 
-    public LoginSubSystemProtocol setUserId(String userId) {
+    public LoginProtocol setUserId(String userId) {
         this.userId = userId;
         return this;
     }
@@ -28,7 +28,7 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         return password;
     }
 
-    public LoginSubSystemProtocol setPassword(String password) {
+    public LoginProtocol setPassword(String password) {
         this.password = password;
         return this;
     }
@@ -37,7 +37,7 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         return isLoginSuccess;
     }
 
-    public LoginSubSystemProtocol setLoginSuccess(boolean loginSuccess) {
+    public LoginProtocol setLoginSuccess(boolean loginSuccess) {
         isLoginSuccess = loginSuccess;
         return this;
     }
@@ -46,7 +46,7 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         return loginFailedReason;
     }
 
-    public LoginSubSystemProtocol setLoginFailedReason(String loginFailedReason) {
+    public LoginProtocol setLoginFailedReason(String loginFailedReason) {
         this.loginFailedReason = loginFailedReason;
         return this;
     }

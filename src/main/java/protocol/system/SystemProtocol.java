@@ -13,17 +13,17 @@ import protocol.system.subprotocol.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = EndgameSubSystemProtocol.class,   		name = "ENDGAME"),
-        @JsonSubTypes.Type(value = LoginSubSystemProtocol.class,     		name = "LOGIN"),
-        @JsonSubTypes.Type(value = LogoutSubSystemProtocol.class,    		name = "LOGOUT"),
-        @JsonSubTypes.Type(value = StartgameSubSystemProtocol.class, 		name = "STARTGAME"),
-        @JsonSubTypes.Type(value = RoomMasterSubSystemProtocol.class, 		name = "ROOMMASTER"),
-        @JsonSubTypes.Type(value = StartgameFailedSubSystemProtocol.class, 	name = "STARTGAMEFAIL"),
-        @JsonSubTypes.Type(value = GameRoomListSubSystemProtocol.class, 	name = "GAMEROOMLIST"),
-        @JsonSubTypes.Type(value = JoinGameRoomSubSystemProtocol.class, 	name = "JOINGAMEROOM"),
-        @JsonSubTypes.Type(value = GameRoomMakeSubSystemProtocol.class, 	name = "MAKEGAMEROOM"),
-        @JsonSubTypes.Type(value = GameRoomUserListSubSystemProtocol.class, name = "GAMEROOMUSERLIST"),
-        @JsonSubTypes.Type(value = UserJoinNotifySubSystemProtocol.class, 	name = "USERJOINNOTIFY")
+        @JsonSubTypes.Type(value = EndgameProtocol.class,   		name = "ENDGAME"),
+        @JsonSubTypes.Type(value = LoginProtocol.class,     		name = "LOGIN"),
+        @JsonSubTypes.Type(value = LogoutProtocol.class,    		name = "LOGOUT"),
+        @JsonSubTypes.Type(value = StartgameProtocol.class, 		name = "STARTGAME"),
+        @JsonSubTypes.Type(value = RoomMasterProtocol.class, 		name = "ROOMMASTER"),
+        @JsonSubTypes.Type(value = StartgameFailedProtocol.class, 	name = "STARTGAMEFAIL"),
+        @JsonSubTypes.Type(value = GameRoomListProtocol.class, 	name = "GAMEROOMLIST"),
+        @JsonSubTypes.Type(value = JoinGameRoomProtocol.class, 	name = "JOINGAMEROOM"),
+        @JsonSubTypes.Type(value = GameRoomMakeProtocol.class, 	name = "MAKEGAMEROOM"),
+        @JsonSubTypes.Type(value = GameRoomUserListProtocol.class, name = "GAMEROOMUSERLIST"),
+        @JsonSubTypes.Type(value = UserJoinNotifyProtocol.class, 	name = "USERJOINNOTIFY")
 })
 public abstract class SystemProtocol implements Protocol {
     @Override

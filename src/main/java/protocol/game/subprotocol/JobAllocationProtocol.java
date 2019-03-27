@@ -8,14 +8,14 @@ import protocol.game.GameProtocol;
  * 서버 to 클라 : 유저에게 할당된 직업을 통보
  * 클라 to 서버 : -
  */
-public class JobAllocationSubGameProtocol extends GameProtocol {
+public class JobAllocationProtocol extends GameProtocol {
     private String jobName; // 직업명
 
     public String getJobName() {
         return jobName;
     }
 
-    public JobAllocationSubGameProtocol setJobName(String jobName) {
+    public JobAllocationProtocol setJobName(String jobName) {
         this.jobName = jobName;
         return this;
     }

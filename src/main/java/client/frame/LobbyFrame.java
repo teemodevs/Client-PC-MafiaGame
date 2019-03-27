@@ -18,9 +18,9 @@ import javax.swing.border.EmptyBorder;
 import client.frame.action.CloseWindowWithLogoutAction;
 import game.User;
 import protocol.Protocol;
-import protocol.system.subprotocol.GameRoomListSubSystemProtocol;
-import protocol.system.subprotocol.GameRoomMakeSubSystemProtocol;
-import protocol.system.subprotocol.JoinGameRoomSubSystemProtocol;
+import protocol.system.subprotocol.GameRoomListProtocol;
+import protocol.system.subprotocol.GameRoomMakeProtocol;
+import protocol.system.subprotocol.JoinGameRoomProtocol;
 
 /**
  * 로그인에 성공하고 대기실 화면. 서버에 만들어진 GameRoom의 리스트를 확인할 수 있음
@@ -78,7 +78,7 @@ public class LobbyFrame extends JFrame {
 	 * 서버에 접속 가능한 GameRoom 리스트를 요청
 	 */
 	public void updateGameRoomListRequest() {
-		Protocol protocol = new GameRoomListSubSystemProtocol();
+		Protocol protocol = new GameRoomListProtocol();
 		User.getInstance().sendProtocol(protocol);
 	}
 
@@ -98,7 +98,7 @@ public class LobbyFrame extends JFrame {
 	class GameRoomMakeAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Protocol protocol = new GameRoomMakeSubSystemProtocol();
+			Protocol protocol = new GameRoomMakeProtocol();
 			User.getInstance().sendProtocol(protocol);
 		}
 	}
@@ -115,7 +115,7 @@ public class LobbyFrame extends JFrame {
 	            // 빈칸 클릭이 아닌 경우
 	            if (index != -1) {
 	            	int gameRoomNumber = (int) list.getSelectedValue();
-	            	Protocol protocol = new JoinGameRoomSubSystemProtocol().setGameRoomNumber(gameRoomNumber);
+	            	Protocol protocol = new JoinGameRoomProtocol().setGameRoomNumber(gameRoomNumber);
 	            	User.getInstance().sendProtocol(protocol);
 	            }
 	        } 
