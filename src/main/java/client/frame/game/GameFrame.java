@@ -23,6 +23,7 @@ import client.frame.action.CloseWindowWithLogoutAction;
 import exception.game.gui.MessageAppendToPanelFailure;
 import game.GameContext;
 import game.User;
+import resource.SoundPlayer;
 
 /**
  * LobbyFrame에서 방을 선택하고 방에 들어왔을 때 게임창
@@ -47,6 +48,11 @@ public class GameFrame extends JFrame {
 	private JButton 		sendMessageButton; 	// 채팅창 전송버튼
 	private JTextPane 		textPane; 			// 채팅창
 
+	/**
+	 * 사운드
+	 */
+	private SoundPlayer		bgmSoundPlayer;		// 게임방 기본 음악 플레이어
+	
 	private GameFrame() {
 		mainPanel = new JPanel();
 		centerLabel = new JLabel("환영합니다.", JLabel.CENTER);
@@ -56,6 +62,7 @@ public class GameFrame extends JFrame {
 		scrollPane = new JScrollPane();
 		sendMessageButton = new JButton("전송");
 		textPane = new JTextPane();
+		bgmSoundPlayer = new SoundPlayer("sound/gameroomwait.wav");
 	}
 
 	/**
@@ -64,14 +71,6 @@ public class GameFrame extends JFrame {
 	 */
 	public static GameFrame getInstance() {
 		return gameFrame;
-	}
-
-	/**
-	 * 게임프레임 메인 패널 반환
-	 * @return mainPanel JPanel 게임프레임 메인 패널
-	 */
-	public JPanel getMainPanel() {
-		return this.mainPanel;
 	}
 	
 	/**
@@ -141,6 +140,8 @@ public class GameFrame extends JFrame {
 
 		this.addWindowListener(new CloseWindowWithLogoutAction());
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		
+		this.soundOn();
 		setVisible(true);
 	}
 
@@ -228,6 +229,19 @@ public class GameFrame extends JFrame {
 	}
 	
 	/**
+	 * GameFrame BGM 켜기
+	 */
+	public void soundOn() {
+		this.bgmSoundPlayer.play().repeat();
+	}
+	
+	/**
+	 * GameFrame BGM 끄기
+	 */
+	public void soundOff() {
+		this.bgmSoundPlayer.stop();
+	}
+	/**
 	 * 메시지 전송 액션 : 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
 	 */
 	class SubmitMessageAction implements ActionListener {
@@ -243,6 +257,7 @@ public class GameFrame extends JFrame {
 	class StartGameAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			new SoundPlayer("sound/buttonclick.wav").play();
 			User.getInstance().startGame();	
 		}
 		
