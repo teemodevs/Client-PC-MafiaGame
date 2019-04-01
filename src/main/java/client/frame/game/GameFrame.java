@@ -23,6 +23,7 @@ import client.frame.action.CloseWindowWithLogoutAction;
 import exception.game.gui.MessageAppendToPanelFailure;
 import game.GameContext;
 import game.User;
+import resource.ResourceLoader;
 import resource.SoundPlayer;
 
 /**
@@ -241,6 +242,33 @@ public class GameFrame extends JFrame {
 	public void soundOff() {
 		this.bgmSoundPlayer.stop();
 	}
+	
+	/**
+	 * 특정 유저의 캐릭터 버튼 이미지 변경
+	 * @param userId String 이미지를 변경할 유저의 Id
+	 * @param filePath String 변경할 이미지의 경로
+	 */
+	public void setCharacterButtonImage(String userId, String filePath) {
+		for (UserFrame userFrame : this.userFrameList) {
+			// 활성화 되어 있고 해당 유저가 맞으면 이미지 변경
+			if ((userFrame.isLogined()) && (userFrame.getIdLabel().getText() == userId))
+				userFrame.getCharacterButton().setIcon(ResourceLoader.getImageIconResource(filePath));
+		}
+	}
+	
+	/**
+	 * 특정 유저의 캐릭터 버튼 비활성화
+	 * @param userId String 버튼을 활성/비활성 시킬 유저의 Id
+	 * @param active boolean 버튼 활성/비활성 여부
+	 */
+	public void setCharacterButtonActivation(String userId, boolean active) {
+		for (UserFrame userFrame : this.userFrameList) {
+			// 활성화 되어 있고 해당 유저가 맞으면 버튼 활성/비활성화
+			if ((userFrame.isLogined()) && (userFrame.getIdLabel().getText() == userId)) 
+				userFrame.getCharacterButton().setEnabled(active);
+		}
+	}
+	
 	/**
 	 * 메시지 전송 액션 : 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
 	 */

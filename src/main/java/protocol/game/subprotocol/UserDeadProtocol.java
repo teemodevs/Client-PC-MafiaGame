@@ -1,5 +1,6 @@
 package protocol.game.subprotocol;
 
+import client.frame.game.GameFrame;
 import protocol.game.GameProtocol;
 
 /**
@@ -23,5 +24,12 @@ public class UserDeadProtocol extends GameProtocol {
 	@Override
 	public void execute() {
 		System.out.println(this.getClass().getSimpleName() + ".execute()");
+		GameFrame gameFrame = GameFrame.getInstance();
+		
+		// 죽은 유저의 아이콘을 죽은 아이콘으로 변경
+		gameFrame.setCharacterButtonImage(this.killedUserId, "img/death.png");
+		
+		// 죽은 유저의 버튼을 비활성화
+		gameFrame.setCharacterButtonActivation(this.killedUserId, false);
 	}
 }
