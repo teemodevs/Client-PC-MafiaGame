@@ -26,6 +26,6 @@ public class StartgameProtocol extends SystemProtocol {
 		GameContext.getInstance().gameStart();
 
 		if (User.getInstance().isRoomMaster())
-			gameFrame.setVisibleStartButton(false);
+			gameFrame.setStartButtonVisible(false);
 	}
 }

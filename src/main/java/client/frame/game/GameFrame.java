@@ -36,10 +36,12 @@ public class GameFrame extends JFrame {
 	/**
 	 * 메인 패널
 	 */
-	private JPanel 			mainPanel; 			// 메인 패널
-	private JLabel 			centerLabel; 		// GameFrame 중앙 라벨
-	private List<UserFrame> userFrameList; 		// 유저 패널 리스트
-	private JButton 		startButton; 		// 시작 버튼
+	private JPanel 			mainPanel; 		// 메인 패널
+	private JLabel 			centerLabel; 	// GameFrame 중앙 라벨
+	private List<UserFrame> userFrameList; 	// 유저 패널 리스트
+	private JButton 		startButton; 	// 시작 버튼
+	private JButton 		killButton;		// 죽이기 버튼
+	private JButton 		saveButton;		// 살리기 버튼
 
 	/**
 	 * 채팅창
@@ -55,15 +57,17 @@ public class GameFrame extends JFrame {
 	private SoundPlayer		bgmSoundPlayer;		// 게임방 기본 음악 플레이어
 	
 	private GameFrame() {
-		mainPanel = new JPanel();
-		centerLabel = new JLabel("환영합니다.", JLabel.CENTER);
-		userFrameList = new ArrayList<>(8);
-		
-		inputChatTextField = new JTextField();
-		scrollPane = new JScrollPane();
-		sendMessageButton = new JButton("전송");
-		textPane = new JTextPane();
-		bgmSoundPlayer = new SoundPlayer("sound/gameroomwait.wav");
+		mainPanel 		= new JPanel();
+		centerLabel 	= new JLabel("환영합니다.", JLabel.CENTER);
+		userFrameList 	= new ArrayList<>(8);
+		killButton = new JButton("Kill");
+		saveButton = new JButton("Save");
+
+		inputChatTextField 	= new JTextField();
+		scrollPane 			= new JScrollPane();
+		sendMessageButton 	= new JButton("전송");
+		textPane 			= new JTextPane();
+		bgmSoundPlayer 		= new SoundPlayer("sound/gameroomwait.wav");
 	}
 
 	/**
@@ -118,7 +122,21 @@ public class GameFrame extends JFrame {
 			this.mainPanel.add(userFrame.getCharacterButton());
 			this.mainPanel.add(userFrame.getIdLabel());
 		}
-		
+
+		/* 죽이기 버튼 설정 */
+		killButton.setBounds(280, 320, 70, 30);
+		killButton.setBackground(Color.BLACK);
+		killButton.setForeground(Color.RED);
+		killButton.setVisible(false);
+		mainPanel.add(killButton);
+
+		/* 살리기 버튼 설정 */
+		saveButton.setBounds(280, 320, 70, 30);
+		saveButton.setBackground(Color.BLACK);
+		saveButton.setForeground(Color.BLUE);
+		saveButton.setVisible(false);
+		mainPanel.add(saveButton);
+
 		/* 채팅 입력창 설정 */
 		inputChatTextField.setBounds(696, 532, 210, 32);
 		mainPanel.add(inputChatTextField);
@@ -212,9 +230,9 @@ public class GameFrame extends JFrame {
 		this.startButton.addActionListener(new StartGameAction());
 		
 		if (GameContext.getInstance().isPlaying())
-			this.startButton.setVisible(false);
-		else 
-			this.startButton.setVisible(true);
+			this.setStartButtonVisible(false);
+		else
+			this.setStartButtonVisible(true);
 		
 		this.mainPanel.add(startButton);
 		repaint();
@@ -225,10 +243,28 @@ public class GameFrame extends JFrame {
 	 * 활성화 시 : 방장으로 할당되어 있는경우 && 게임이 시작하지 않은 경우
 	 * @param visible boolean 활성화 여부
 	 */
-	public void setVisibleStartButton(boolean visible) {
+	public void setStartButtonVisible(boolean visible) {
 		this.startButton.setVisible(visible);
 	}
-	
+
+	/**
+	 * 죽이기 버튼 활성/비활성화
+	 * 활성화 시 : 최후의 변론이 끝난 후 처형투표 시 && 유저가 살아있는 경우
+	 * @param visible boolean 활성화 여부
+	 */
+	public void setKillButtonVisible(boolean visible) {
+		this.killButton.setVisible(visible);
+	}
+
+	/**
+	 * 살리기 버튼 활성/비활성화
+	 * 활성화 시 : 최후의 변론이 끝난 후 처형투표 시 && 유저가 살아있는 경우
+	 * @param visible boolean 활성화 여부
+	 */
+	public void setSaveButtonVisible(boolean visible) {
+		this.saveButton.setVisible(visible);
+	}
+
 	/**
 	 * GameFrame BGM 켜기
 	 */

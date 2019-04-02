@@ -22,6 +22,6 @@ public class EndgameProtocol extends SystemProtocol {
         gameFrame.appendMessageToTextPane("게임종료", Color.BLUE);
 
         if (User.getInstance().isRoomMaster())
-            gameFrame.setVisibleStartButton(true);
+            gameFrame.setStartButtonVisible(true);
     }
 }
