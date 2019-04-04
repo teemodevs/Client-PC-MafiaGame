@@ -23,6 +23,8 @@ import client.frame.action.CloseWindowWithLogoutAction;
 import exception.game.gui.MessageAppendToPanelFailure;
 import game.GameContext;
 import game.User;
+import protocol.Protocol;
+import protocol.game.subprotocol.ExecuteVoteAgreeProtocol;
 import resource.ResourceLoader;
 import resource.SoundPlayer;
 
@@ -128,13 +130,15 @@ public class GameFrame extends JFrame {
 		killButton.setBackground(Color.BLACK);
 		killButton.setForeground(Color.RED);
 		killButton.setVisible(false);
+		killButton.addActionListener(new ExecuteVoteAgreeAction());
 		mainPanel.add(killButton);
 
 		/* 살리기 버튼 설정 */
-		saveButton.setBounds(280, 320, 70, 30);
+		saveButton.setBounds(360, 320, 70, 30);
 		saveButton.setBackground(Color.BLACK);
 		saveButton.setForeground(Color.BLUE);
 		saveButton.setVisible(false);
+		saveButton.addActionListener(new ButtonDisableAction());
 		mainPanel.add(saveButton);
 
 		/* 채팅 입력창 설정 */
@@ -269,7 +273,7 @@ public class GameFrame extends JFrame {
 	 * GameFrame BGM 켜기
 	 */
 	public void soundOn() {
-		this.bgmSoundPlayer.play().repeat();
+		//this.bgmSoundPlayer.play().repeat();
 	}
 	
 	/**
@@ -304,7 +308,28 @@ public class GameFrame extends JFrame {
 				userFrame.getCharacterButton().setEnabled(active);
 		}
 	}
-	
+
+	/**
+	 * 처형투표 찬성 액션 : 가장 많은 투표수를 얻은 유저에 대해 처형을 찬성함
+	 */
+	class ExecuteVoteAgreeAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Protocol protocol = new ExecuteVoteAgreeProtocol();
+			User.getInstance().sendProtocol(protocol);
+			new ButtonDisableAction().actionPerformed(e);
+		}
+	}
+
+	class ButtonDisableAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new SoundPlayer("sound/buttonclick.wav").play();
+			killButton.setEnabled(false);
+			saveButton.setEnabled(false);
+		}
+	}
+
 	/**
 	 * 메시지 전송 액션 : 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
 	 */
@@ -324,6 +349,5 @@ public class GameFrame extends JFrame {
 			new SoundPlayer("sound/buttonclick.wav").play();
 			User.getInstance().startGame();	
 		}
-		
 	}
 }
