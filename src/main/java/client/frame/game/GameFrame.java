@@ -252,7 +252,7 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * 죽이기 버튼 활성/비활성화
+	 * 죽이기 버튼 보이기/안보이기
 	 * 활성화 시 : 최후의 변론이 끝난 후 처형투표 시 && 유저가 살아있는 경우
 	 * @param visible boolean 활성화 여부
 	 */
@@ -261,12 +261,32 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * 살리기 버튼 활성/비활성화
+	 * 죽이기 버튼 활성/비활성화
+	 * 활성화 시 : 최후의 변론이 끝난 후 처형투표 시 && 유저가 살아있는 경우
+	 * @param enable boolean 활성화 여부
+	 */
+	public void setKillButtonEnable(boolean enable) {
+		this.killButton.setEnabled(enable);
+	}
+	
+
+	/**
+	 * 살리기 버튼 보이기/안보이기
 	 * 활성화 시 : 최후의 변론이 끝난 후 처형투표 시 && 유저가 살아있는 경우
 	 * @param visible boolean 활성화 여부
 	 */
 	public void setSaveButtonVisible(boolean visible) {
 		this.saveButton.setVisible(visible);
+	}
+	
+	
+	/**
+	 * 죽이기 버튼 활성/비활성화
+	 * 활성화 시 : 최후의 변론이 끝난 후 처형투표 시 && 유저가 살아있는 경우
+	 * @param enable boolean 활성화 여부
+	 */
+	public void setSaveButtonEnable(boolean enable) {
+		this.saveButton.setEnabled(enable);
 	}
 
 	/**
@@ -291,7 +311,7 @@ public class GameFrame extends JFrame {
 	public void setCharacterButtonImage(String userId, String filePath) {
 		for (UserFrame userFrame : this.userFrameList) {
 			// 활성화 되어 있고 해당 유저가 맞으면 이미지 변경
-			if ((userFrame.isLogined()) && (userFrame.getIdLabel().getText() == userId))
+			if ((userFrame.isLogined()) && (userFrame.getIdLabel().getText().equals(userId)))
 				userFrame.getCharacterButton().setIcon(ResourceLoader.getImageIconResource(filePath));
 		}
 	}

@@ -20,9 +20,4 @@ public class ArgumentPhase implements Phase {
     public void phaseStart() {
         GameFrame.getInstance().appendMessageToTextPane("최후의 변론입니다.", Color.BLUE);
     }
-
-    @Override
-    public void phaseEnd() {
-
-    }
 }

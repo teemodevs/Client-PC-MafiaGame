@@ -20,9 +20,4 @@ public class MorningPhase implements Phase {
     public void phaseStart() {
         GameFrame.getInstance().appendMessageToTextPane("아침이 되었습니다.", Color.BLUE);
     }
-
-    @Override
-    public void phaseEnd() {
-
-    }
 }

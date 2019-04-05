@@ -1,6 +1,7 @@
 package game.phase;
 
 import client.frame.game.GameFrame;
+import game.GameContext;
 
 import java.awt.*;
 
@@ -18,14 +19,16 @@ public class ExecuteVotePhase implements Phase {
 
     @Override
     public void phaseStart() {
-        GameFrame gameFrame = GameFrame.getInstance();
+    	GameFrame gameFrame = GameFrame.getInstance();
         gameFrame.appendMessageToTextPane("처형투표를 시작합니다.", Color.BLUE);
+        
+        if (!GameContext.getInstance().isAlive())
+        	return;
+
         gameFrame.setKillButtonVisible(true);
+        gameFrame.setKillButtonEnable(true);
         gameFrame.setSaveButtonVisible(true);
-    }
-
-    @Override
-    public void phaseEnd() {
-
+        gameFrame.setSaveButtonEnable(true);
+        
     }
 }

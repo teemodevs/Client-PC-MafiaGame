@@ -19,10 +19,11 @@ public class NightPhase implements Phase {
     @Override
     public void phaseStart() {
         GameFrame.getInstance().appendMessageToTextPane("밤이 되었습니다.", Color.BLUE);
-    }
-
-    @Override
-    public void phaseEnd() {
-
+        
+    	GameFrame gameFrame = GameFrame.getInstance();
+        gameFrame.setKillButtonVisible(false);
+        gameFrame.setKillButtonEnable(false);
+        gameFrame.setSaveButtonVisible(false);
+        gameFrame.setSaveButtonEnable(false);
     }
 }

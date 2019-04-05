@@ -20,9 +20,4 @@ public class MafiaVotePhase implements Phase {
     public void phaseStart() {
         GameFrame.getInstance().appendMessageToTextPane("마피아 투표를 시작합니다.", Color.BLUE);
     }
-
-    @Override
-    public void phaseEnd() {
-
-    }
 }
