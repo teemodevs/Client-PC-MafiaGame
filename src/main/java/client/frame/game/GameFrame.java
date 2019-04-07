@@ -3,6 +3,8 @@ package client.frame.game;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,8 +64,8 @@ public class GameFrame extends JFrame {
 		mainPanel 		= new JPanel();
 		centerLabel 	= new JLabel("환영합니다.", JLabel.CENTER);
 		userFrameList 	= new ArrayList<>(8);
-		killButton = new JButton("Kill");
-		saveButton = new JButton("Save");
+		killButton 		= new JButton("Kill");
+		saveButton 		= new JButton("Save");
 
 		inputChatTextField 	= new JTextField();
 		scrollPane 			= new JScrollPane();
@@ -138,11 +140,12 @@ public class GameFrame extends JFrame {
 		saveButton.setBackground(Color.BLACK);
 		saveButton.setForeground(Color.BLUE);
 		saveButton.setVisible(false);
-		saveButton.addActionListener(new ButtonDisableAction());
+		saveButton.addActionListener(new KillAndSaveButtonDisableAction());
 		mainPanel.add(saveButton);
 
 		/* 채팅 입력창 설정 */
 		inputChatTextField.setBounds(696, 532, 210, 32);
+		inputChatTextField.addKeyListener(new SubmitMessageWithEnterAction());
 		mainPanel.add(inputChatTextField);
 		
 		/* 채팅창 스크롤 설정 */
@@ -180,6 +183,15 @@ public class GameFrame extends JFrame {
 		return null;
 	}
 
+	/**
+	 * 게임 시작 시 프레임 변환
+	 */
+	public void startGame() {
+		for (UserFrame userFrame : this.userFrameList) {
+			if (userFrame.isLogined())
+				this.setCharacterButtonImage(userFrame.getIdLabel().getText(), "img/civil.png");
+		}
+	}
 	/**
 	 * 유저가 새로 로그인할 때 UserFrame에 할당 후 활성화
 	 * @param loginUserIdList String 서버 기준에서 접속한 유저의 id List
@@ -337,11 +349,14 @@ public class GameFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			Protocol protocol = new ExecuteVoteAgreeProtocol();
 			User.getInstance().sendProtocol(protocol);
-			new ButtonDisableAction().actionPerformed(e);
+			new KillAndSaveButtonDisableAction().actionPerformed(e);
 		}
 	}
 
-	class ButtonDisableAction implements ActionListener {
+	/**
+	 * Kill, Save 버튼 클릭 시 비활성화 액션
+	 */
+	class KillAndSaveButtonDisableAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			new SoundPlayer("sound/buttonclick.wav").play();
@@ -351,12 +366,35 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * 메시지 전송 액션 : 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
+	 * 메시지 전송 및 채팅입력창 초기화
+	 */
+	private void submitMessage() {
+		String message = inputChatTextField.getText();
+
+		if (!message.equals("")) {
+			User.getInstance().sendMessage(message);
+			inputChatTextField.setText("");
+		}
+	}
+
+	/**
+	 * 메시지 전송 액션 : '전송' 버튼 클릭 시 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
 	 */
 	class SubmitMessageAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			User.getInstance().sendMessage(inputChatTextField.getText());
+			submitMessage();
+		}
+	}
+
+	/**
+	 * 메시지 전송 액션 : 키보드의 엔터 클릭 시 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
+	 */
+	class SubmitMessageWithEnterAction extends KeyAdapter {
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				submitMessage();
 		}
 	}
 	

@@ -22,6 +22,7 @@ public class StartgameProtocol extends SystemProtocol {
 
 		GameFrame gameFrame = GameFrame.getInstance();
 		gameFrame.appendMessageToTextPane("Game Started", Color.BLUE);
+		gameFrame.startGame();
 
 		GameContext.getInstance().gameStart();
 
