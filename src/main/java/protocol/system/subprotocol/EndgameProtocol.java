@@ -23,5 +23,8 @@ public class EndgameProtocol extends SystemProtocol {
 
         if (User.getInstance().isRoomMaster())
             gameFrame.setStartButtonVisible(true);
+        
+        gameFrame.setKillButtonVisible(false);
+        gameFrame.setSaveButtonVisible(false);
     }
 }

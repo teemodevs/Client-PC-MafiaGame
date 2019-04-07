@@ -8,14 +8,19 @@ public class GameContext {
 	private boolean playing; // 현재 플레이 중 여부
 	private boolean alive;   // 현재 생존 여부
 	
-	public GameContext() {}
-	
+	private GameContext() {}
+
 	public static GameContext getInstance() {
 		return gameContext;
 	}
 
 	public void gameStart() {
-		this.playing = true;
+		this.setPlaying(true);
+		this.setAlive(true);
+	}
+	
+	public void setPlaying(boolean playing) {
+		this.playing = playing;
 	}
 	
 	public boolean isPlaying() {
