@@ -11,7 +11,27 @@ import java.awt.*;
  * 클라 to 서버 : -
  */
 public class EndgameProtocol extends SystemProtocol {
-	
+    private String winTeam;
+    private String userJobMap;
+
+    public String getUserJobMap() {
+        return this.userJobMap;
+    }
+
+    public EndgameProtocol setUserJobMap(String userJobMap){
+        this.userJobMap = userJobMap;
+        return this;
+    }
+
+    public String getWinTeam() {
+        return winTeam;
+    }
+
+    public EndgameProtocol setWinTeam(String winTeam) {
+        this.winTeam = winTeam;
+        return this;
+    }
+
     /**
      * 게임 종료 시 클라이언트 화면 수정, 방장의 경우 버튼이 보임
      */
@@ -20,6 +40,9 @@ public class EndgameProtocol extends SystemProtocol {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
         GameFrame gameFrame = GameFrame.getInstance();
         gameFrame.appendMessageToTextPane("게임종료", Color.BLUE);
+        gameFrame.appendMessageToTextPane(this.winTeam + "팀 승리", Color.BLUE);
+
+        gameFrame.appendMessageToTextPane(this.userJobMap, Color.BLUE);
 
         if (User.getInstance().isRoomMaster())
             gameFrame.setStartButtonVisible(true);
