@@ -30,7 +30,7 @@ public class RoomMasterProtocol extends SystemProtocol {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
         
         GameFrame gameFrame = GameFrame.getInstance();
-        gameFrame.appendMessageToTextPane("your are master", Color.BLUE);
+        gameFrame.appendMessageToTextPane("방장입니다.", Color.BLUE);
         User.getInstance().setRoomMaster(true);
         gameFrame.addStartButton();
 		
