@@ -21,7 +21,8 @@ import protocol.game.subprotocol.*;
         @JsonSubTypes.Type(value = DoctorHealProtocol.class,    	name = "JOB_DOCTOR_HEAL"),
         @JsonSubTypes.Type(value = UserDeadProtocol.class,      	name = "USER_DEAD"),
         @JsonSubTypes.Type(value = ExecuteVoteAgreeProtocol.class,  name = "VOTE_EXECUTE_AGREE"),
-        @JsonSubTypes.Type(value = MafiaVoteCountProtocol.class,    name = "MAFIA_VOTE_COUNT")
+        @JsonSubTypes.Type(value = MafiaVoteCountProtocol.class,    name = "MAFIA_VOTE_COUNT"),
+        @JsonSubTypes.Type(value = MostMafiaVotedUserProtocol.class,name = "MOST_MAFIA_VOTED_USER")
 })
 public abstract class GameProtocol implements Protocol {
     @Override
