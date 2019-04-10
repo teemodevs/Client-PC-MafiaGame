@@ -36,6 +36,6 @@ public class MafiaVoteCountProtocol extends GameProtocol {
     public void execute() {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
 		GameFrame gameFrame = GameFrame.getInstance();
-		gameFrame.appendMessageToTextPane(this.userId + "님 : " + this.mafiaVoteCount + "표", Color.BLUE);
+		gameFrame.appendMessageToTextPane(this.userId + "님에 대한 마피아 투표 : " + this.mafiaVoteCount + "표", Color.BLUE);
     }
 }

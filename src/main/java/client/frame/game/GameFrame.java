@@ -26,7 +26,7 @@ import exception.game.gui.MessageAppendToPanelFailure;
 import game.GameContext;
 import game.User;
 import protocol.Protocol;
-import protocol.game.subprotocol.ExecuteVoteAgreeProtocol;
+import protocol.game.subprotocol.ExecuteVoteProtocol;
 import resource.ResourceLoader;
 import resource.SoundPlayer;
 
@@ -132,7 +132,7 @@ public class GameFrame extends JFrame {
 		killButton.setBackground(Color.BLACK);
 		killButton.setForeground(Color.RED);
 		killButton.setVisible(false);
-		killButton.addActionListener(new ExecuteVoteAgreeAction());
+		killButton.addActionListener(new ExecuteVoteAction(true));
 		mainPanel.add(killButton);
 
 		/* 살리기 버튼 설정 */
@@ -140,7 +140,7 @@ public class GameFrame extends JFrame {
 		saveButton.setBackground(Color.BLACK);
 		saveButton.setForeground(Color.BLUE);
 		saveButton.setVisible(false);
-		saveButton.addActionListener(new KillAndSaveButtonDisableAction());
+		saveButton.addActionListener(new ExecuteVoteAction(false));
 		mainPanel.add(saveButton);
 
 		/* 채팅 입력창 설정 */
@@ -342,23 +342,19 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * 처형투표 찬성 액션 : 가장 많은 투표수를 얻은 유저에 대해 처형을 찬성함
+	 * 처형투표 액션 : 가장 많은 투표수를 얻은 유저에 대해 처형 찬/반 투표 수행
 	 */
-	class ExecuteVoteAgreeAction implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			Protocol protocol = new ExecuteVoteAgreeProtocol();
-			User.getInstance().sendProtocol(protocol);
-			new KillAndSaveButtonDisableAction().actionPerformed(e);
-		}
-	}
+	class ExecuteVoteAction implements ActionListener {
+		private boolean agree;
 
-	/**
-	 * Kill, Save 버튼 클릭 시 비활성화 액션
-	 */
-	class KillAndSaveButtonDisableAction implements ActionListener {
+		ExecuteVoteAction(boolean agree) {
+			this.agree = agree;
+		}
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			Protocol protocol = new ExecuteVoteProtocol().setAgree(this.agree);
+			User.getInstance().sendProtocol(protocol);
 			new SoundPlayer("sound/buttonclick.wav").play();
 			killButton.setEnabled(false);
 			saveButton.setEnabled(false);
