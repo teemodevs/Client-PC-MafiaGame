@@ -1,18 +1,17 @@
 package protocol.game.subprotocol;
 
-import client.frame.game.GameFrame;
+import game.phase.Phase;
+import game.phase.PhaseEnum;
 import protocol.game.GameProtocol;
-
-import java.awt.*;
 
 /**
  * 서버 to 클라 : 모든 유저에게 Phase 변경을 통보
  * 클라 to 서버 : -
  */
-public class PhaseProtocol extends GameProtocol {
+public class PhaseChangeProtocol extends GameProtocol {
     private String phaseName;
 
-    public PhaseProtocol setPhaseName(String phaseName) {
+    public PhaseChangeProtocol setPhaseName(String phaseName) {
         this.phaseName = phaseName;
         return this;
     }
@@ -26,8 +25,8 @@ public class PhaseProtocol extends GameProtocol {
      */
     @Override
     public void execute() {
-        GameFrame gameFrame = GameFrame.getInstance();
-        gameFrame.appendMessageToTextPane(this.phaseName + "입니다", Color.BLUE);
+        Phase phase = PhaseEnum.valueOf(this.phaseName.toUpperCase()).getPhase();
+        phase.phaseStart();
         System.out.println(this.getClass().getSimpleName() + ".execute()");
     }
 }

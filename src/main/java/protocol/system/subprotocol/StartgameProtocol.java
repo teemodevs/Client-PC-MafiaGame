@@ -22,10 +22,11 @@ public class StartgameProtocol extends SystemProtocol {
 
 		GameFrame gameFrame = GameFrame.getInstance();
 		gameFrame.appendMessageToTextPane("Game Started", Color.BLUE);
+		gameFrame.startGame();
 
 		GameContext.getInstance().gameStart();
 
 		if (User.getInstance().isRoomMaster())
-			gameFrame.setVisibleStartButton(false);
+			gameFrame.setStartButtonVisible(false);
 	}
 }

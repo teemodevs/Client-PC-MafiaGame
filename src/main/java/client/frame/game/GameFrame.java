@@ -3,6 +3,8 @@ package client.frame.game;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,9 @@ import client.frame.action.CloseWindowWithLogoutAction;
 import exception.game.gui.MessageAppendToPanelFailure;
 import game.GameContext;
 import game.User;
+import protocol.Protocol;
+import protocol.game.subprotocol.ExecuteVoteProtocol;
+import resource.ResourceLoader;
 import resource.SoundPlayer;
 
 /**
@@ -35,10 +40,12 @@ public class GameFrame extends JFrame {
 	/**
 	 * 메인 패널
 	 */
-	private JPanel 			mainPanel; 			// 메인 패널
-	private JLabel 			centerLabel; 		// GameFrame 중앙 라벨
-	private List<UserFrame> userFrameList; 		// 유저 패널 리스트
-	private JButton 		startButton; 		// 시작 버튼
+	private JPanel 			mainPanel; 		// 메인 패널
+	private JLabel 			centerLabel; 	// GameFrame 중앙 라벨
+	private List<UserFrame> userFrameList; 	// 유저 패널 리스트
+	private JButton 		startButton; 	// 시작 버튼
+	private JButton 		killButton;		// 죽이기 버튼
+	private JButton 		saveButton;		// 살리기 버튼
 
 	/**
 	 * 채팅창
@@ -54,15 +61,17 @@ public class GameFrame extends JFrame {
 	private SoundPlayer		bgmSoundPlayer;		// 게임방 기본 음악 플레이어
 	
 	private GameFrame() {
-		mainPanel = new JPanel();
-		centerLabel = new JLabel("환영합니다.", JLabel.CENTER);
-		userFrameList = new ArrayList<>(8);
-		
-		inputChatTextField = new JTextField();
-		scrollPane = new JScrollPane();
-		sendMessageButton = new JButton("전송");
-		textPane = new JTextPane();
-		bgmSoundPlayer = new SoundPlayer("sound/gameroomwait.wav");
+		mainPanel 		= new JPanel();
+		centerLabel 	= new JLabel("환영합니다.", JLabel.CENTER);
+		userFrameList 	= new ArrayList<>(8);
+		killButton 		= new JButton("Kill");
+		saveButton 		= new JButton("Save");
+
+		inputChatTextField 	= new JTextField();
+		scrollPane 			= new JScrollPane();
+		sendMessageButton 	= new JButton("전송");
+		textPane 			= new JTextPane();
+		bgmSoundPlayer 		= new SoundPlayer("sound/gameroomwait.wav");
 	}
 
 	/**
@@ -117,9 +126,26 @@ public class GameFrame extends JFrame {
 			this.mainPanel.add(userFrame.getCharacterButton());
 			this.mainPanel.add(userFrame.getIdLabel());
 		}
-		
+
+		/* 죽이기 버튼 설정 */
+		killButton.setBounds(280, 320, 70, 30);
+		killButton.setBackground(Color.BLACK);
+		killButton.setForeground(Color.RED);
+		killButton.setVisible(false);
+		killButton.addActionListener(new ExecuteVoteAction(true));
+		mainPanel.add(killButton);
+
+		/* 살리기 버튼 설정 */
+		saveButton.setBounds(360, 320, 70, 30);
+		saveButton.setBackground(Color.BLACK);
+		saveButton.setForeground(Color.BLUE);
+		saveButton.setVisible(false);
+		saveButton.addActionListener(new ExecuteVoteAction(false));
+		mainPanel.add(saveButton);
+
 		/* 채팅 입력창 설정 */
 		inputChatTextField.setBounds(696, 532, 210, 32);
+		inputChatTextField.addKeyListener(new SubmitMessageWithEnterAction());
 		mainPanel.add(inputChatTextField);
 		
 		/* 채팅창 스크롤 설정 */
@@ -157,6 +183,15 @@ public class GameFrame extends JFrame {
 		return null;
 	}
 
+	/**
+	 * 게임 시작 시 프레임 변환
+	 */
+	public void startGame() {
+		for (UserFrame userFrame : this.userFrameList) {
+			if (userFrame.isLogined())
+				this.setCharacterButtonImage(userFrame.getIdLabel().getText(), "img/civil.png");
+		}
+	}
 	/**
 	 * 유저가 새로 로그인할 때 UserFrame에 할당 후 활성화
 	 * @param loginUserIdList String 서버 기준에서 접속한 유저의 id List
@@ -211,9 +246,9 @@ public class GameFrame extends JFrame {
 		this.startButton.addActionListener(new StartGameAction());
 		
 		if (GameContext.getInstance().isPlaying())
-			this.startButton.setVisible(false);
-		else 
-			this.startButton.setVisible(true);
+			this.setStartButtonVisible(false);
+		else
+			this.setStartButtonVisible(true);
 		
 		this.mainPanel.add(startButton);
 		repaint();
@@ -224,15 +259,53 @@ public class GameFrame extends JFrame {
 	 * 활성화 시 : 방장으로 할당되어 있는경우 && 게임이 시작하지 않은 경우
 	 * @param visible boolean 활성화 여부
 	 */
-	public void setVisibleStartButton(boolean visible) {
+	public void setStartButtonVisible(boolean visible) {
 		this.startButton.setVisible(visible);
 	}
+
+	/**
+	 * 죽이기 버튼 보이기/안보이기
+	 * 활성화 시 : 최후의 변론이 끝난 후 처형투표 시 && 유저가 살아있는 경우
+	 * @param visible boolean 활성화 여부
+	 */
+	public void setKillButtonVisible(boolean visible) {
+		this.killButton.setVisible(visible);
+	}
+
+	/**
+	 * 죽이기 버튼 활성/비활성화
+	 * 활성화 시 : 최후의 변론이 끝난 후 처형투표 시 && 유저가 살아있는 경우
+	 * @param enable boolean 활성화 여부
+	 */
+	public void setKillButtonEnable(boolean enable) {
+		this.killButton.setEnabled(enable);
+	}
 	
+
+	/**
+	 * 살리기 버튼 보이기/안보이기
+	 * 활성화 시 : 최후의 변론이 끝난 후 처형투표 시 && 유저가 살아있는 경우
+	 * @param visible boolean 활성화 여부
+	 */
+	public void setSaveButtonVisible(boolean visible) {
+		this.saveButton.setVisible(visible);
+	}
+	
+	
+	/**
+	 * 죽이기 버튼 활성/비활성화
+	 * 활성화 시 : 최후의 변론이 끝난 후 처형투표 시 && 유저가 살아있는 경우
+	 * @param enable boolean 활성화 여부
+	 */
+	public void setSaveButtonEnable(boolean enable) {
+		this.saveButton.setEnabled(enable);
+	}
+
 	/**
 	 * GameFrame BGM 켜기
 	 */
 	public void soundOn() {
-		this.bgmSoundPlayer.play().repeat();
+		//this.bgmSoundPlayer.play().repeat();
 	}
 	
 	/**
@@ -241,13 +314,83 @@ public class GameFrame extends JFrame {
 	public void soundOff() {
 		this.bgmSoundPlayer.stop();
 	}
+	
 	/**
-	 * 메시지 전송 액션 : 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
+	 * 특정 유저의 캐릭터 버튼 이미지 변경
+	 * @param userId String 이미지를 변경할 유저의 Id
+	 * @param filePath String 변경할 이미지의 경로
+	 */
+	public void setCharacterButtonImage(String userId, String filePath) {
+		for (UserFrame userFrame : this.userFrameList) {
+			// 활성화 되어 있고 해당 유저가 맞으면 이미지 변경
+			if ((userFrame.isLogined()) && (userFrame.getIdLabel().getText().equals(userId)))
+				userFrame.getCharacterButton().setIcon(ResourceLoader.getImageIconResource(filePath));
+		}
+	}
+	
+	/**
+	 * 특정 유저의 캐릭터 버튼 비활성화
+	 * @param userId String 버튼을 활성/비활성 시킬 유저의 Id
+	 * @param active boolean 버튼 활성/비활성 여부
+	 */
+	public void setCharacterButtonActivation(String userId, boolean active) {
+		for (UserFrame userFrame : this.userFrameList) {
+			// 활성화 되어 있고 해당 유저가 맞으면 버튼 활성/비활성화
+			if ((userFrame.isLogined()) && (userFrame.getIdLabel().getText() == userId)) 
+				userFrame.getCharacterButton().setEnabled(active);
+		}
+	}
+
+	/**
+	 * 처형투표 액션 : 가장 많은 투표수를 얻은 유저에 대해 처형 찬/반 투표 수행
+	 */
+	class ExecuteVoteAction implements ActionListener {
+		private boolean agree;
+
+		ExecuteVoteAction(boolean agree) {
+			this.agree = agree;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Protocol protocol = new ExecuteVoteProtocol().setAgree(this.agree);
+			User.getInstance().sendProtocol(protocol);
+			new SoundPlayer("sound/buttonclick.wav").play();
+			killButton.setEnabled(false);
+			saveButton.setEnabled(false);
+		}
+	}
+
+	/**
+	 * 메시지 전송 및 채팅입력창 초기화
+	 */
+	private void submitMessage() {
+		String message = inputChatTextField.getText();
+
+		if (!message.equals("")) {
+			User.getInstance().sendMessage(message);
+			inputChatTextField.setText("");
+		}
+	}
+
+	/**
+	 * 메시지 전송 액션 : '전송' 버튼 클릭 시 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
 	 */
 	class SubmitMessageAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			User.getInstance().sendMessage(inputChatTextField.getText());
+			submitMessage();
+		}
+	}
+
+	/**
+	 * 메시지 전송 액션 : 키보드의 엔터 클릭 시 채팅입력창(inputChatTextField)에 써있는 문자를 서버로 전송
+	 */
+	class SubmitMessageWithEnterAction extends KeyAdapter {
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				submitMessage();
 		}
 	}
 	
@@ -260,6 +403,5 @@ public class GameFrame extends JFrame {
 			new SoundPlayer("sound/buttonclick.wav").play();
 			User.getInstance().startGame();	
 		}
-		
 	}
 }

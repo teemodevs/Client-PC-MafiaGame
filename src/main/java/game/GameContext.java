@@ -5,19 +5,33 @@ package game;
  */
 public class GameContext {
 	private static GameContext gameContext = new GameContext();
-	private boolean isPlaying; // 현재 플레이 중 여부
+	private boolean playing; // 현재 플레이 중 여부
+	private boolean alive;   // 현재 생존 여부
 	
-	public GameContext() {}
-	
+	private GameContext() {}
+
 	public static GameContext getInstance() {
 		return gameContext;
 	}
 
 	public void gameStart() {
-		this.isPlaying = true;
+		this.setPlaying(true);
+		this.setAlive(true);
+	}
+	
+	public void setPlaying(boolean playing) {
+		this.playing = playing;
 	}
 	
 	public boolean isPlaying() {
-		return isPlaying;
+		return this.playing;
+	}
+	
+	public void setAlive(boolean alive) {
+		this.alive = alive;
+	}
+	
+	public boolean isAlive() {
+		return this.alive;
 	}
 }

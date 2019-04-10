@@ -1,5 +1,8 @@
 package protocol.game.subprotocol;
 
+import java.awt.Color;
+
+import client.frame.game.GameFrame;
 import game.User;
 import game.job.JobFactory;
 import protocol.game.GameProtocol;
@@ -28,6 +31,6 @@ public class JobAllocationProtocol extends GameProtocol {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
         User user = User.getInstance();
         user.setJob(JobFactory.create(this.jobName));
-        System.out.println(user.getUserId() + "'s Job : " + user.getJob().getClass().getSimpleName());
+        GameFrame.getInstance().appendMessageToTextPane(this.jobName + "입니다.", Color.BLUE);
     }
 }
