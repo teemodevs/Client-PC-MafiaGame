@@ -1,35 +1,29 @@
 package protocol.system.subprotocol;
 
 import client.frame.game.GameFrame;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import game.GameResult;
 import game.User;
 import protocol.system.SystemProtocol;
 
 import java.awt.*;
+import java.util.Map;
 
 /**
  * 서버 to 클라 : 모든 유저에게 게임이 끝났다고 알림
  * 클라 to 서버 : -
  */
 public class EndgameProtocol extends SystemProtocol {
-    private String winTeam;
-    private String userJobMap;
+    private GameResult gameResult;
 
-    public String getUserJobMap() {
-        return this.userJobMap;
-    }
-
-    public EndgameProtocol setUserJobMap(String userJobMap){
-        this.userJobMap = userJobMap;
+    @JsonProperty("gameResult")
+    public EndgameProtocol setGameResult(GameResult gameResult) {
+        this.gameResult = gameResult;
         return this;
     }
 
-    public String getWinTeam() {
-        return winTeam;
-    }
-
-    public EndgameProtocol setWinTeam(String winTeam) {
-        this.winTeam = winTeam;
-        return this;
+    public GameResult getGameResult() {
+        return this.gameResult;
     }
 
     /**
@@ -40,9 +34,12 @@ public class EndgameProtocol extends SystemProtocol {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
         GameFrame gameFrame = GameFrame.getInstance();
         gameFrame.appendMessageToTextPane("게임종료", Color.BLUE);
-        gameFrame.appendMessageToTextPane(this.winTeam + "팀 승리", Color.BLUE);
+        gameFrame.appendMessageToTextPane(gameResult.getWinTeam() + "팀 승리", Color.BLUE);
 
-        gameFrame.appendMessageToTextPane(this.userJobMap, Color.BLUE);
+        Map<String, String> userJobMap = gameResult.getUserJobMap();
+
+        for (String userId : userJobMap.keySet())
+            gameFrame.appendMessageToTextPane(userId + " : " + userJobMap.get(userId), Color.BLUE);
 
         if (User.getInstance().isRoomMaster())
             gameFrame.setStartButtonVisible(true);
