@@ -40,12 +40,13 @@ public class GameFrame extends JFrame {
 	/**
 	 * 메인 패널
 	 */
-	private JPanel 			mainPanel; 		// 메인 패널
-	private JLabel 			centerLabel; 	// GameFrame 중앙 라벨
-	private List<UserFrame> userFrameList; 	// 유저 패널 리스트
-	private JButton 		startButton; 	// 시작 버튼
-	private JButton 		killButton;		// 죽이기 버튼
-	private JButton 		saveButton;		// 살리기 버튼
+	private JPanel 			mainPanel; 			// 메인 패널
+	private JLabel 			centerLabel; 		// GameFrame 중앙 라벨
+	private JLabel 			gameRoomInfoLabel; 	// GameFrame 정보(방 번호, 방 제목) 라벨
+	private List<UserFrame> userFrameList; 		// 유저 패널 리스트
+	private JButton 		startButton; 		// 시작 버튼
+	private JButton 		killButton;			// 죽이기 버튼
+	private JButton 		saveButton;			// 살리기 버튼
 
 	/**
 	 * 채팅창
@@ -61,11 +62,12 @@ public class GameFrame extends JFrame {
 	private SoundPlayer		bgmSoundPlayer;		// 게임방 기본 음악 플레이어
 	
 	private GameFrame() {
-		mainPanel 		= new JPanel();
-		centerLabel 	= new JLabel("환영합니다.", JLabel.CENTER);
-		userFrameList 	= new ArrayList<>(8);
-		killButton 		= new JButton("Kill");
-		saveButton 		= new JButton("Save");
+		mainPanel 			= new JPanel();
+		centerLabel 		= new JLabel("환영합니다.", JLabel.CENTER);
+		gameRoomInfoLabel 	= new JLabel();
+		userFrameList 		= new ArrayList<>(8);
+		killButton 			= new JButton("Kill");
+		saveButton 			= new JButton("Save");
 
 		inputChatTextField 	= new JTextField();
 		scrollPane 			= new JScrollPane();
@@ -101,8 +103,9 @@ public class GameFrame extends JFrame {
 
 	/**
 	 * 로그인 성공 시 실행, GameFrame 을 띄움
+	 * @param gameRoomNumber Integer
 	 */
-	public void boot() {
+	public void boot(int gameRoomNumber, String gameRoomName) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(200, 100, 1000, 620);
@@ -118,7 +121,14 @@ public class GameFrame extends JFrame {
 		centerLabel.setBackground(Color.red);
 		centerLabel.setForeground(Color.white);
 		mainPanel.add(centerLabel);
-		
+
+		/* 방 정보 라벨 설정 */
+		gameRoomInfoLabel.setBounds(10, 10, 900, 20);
+		gameRoomInfoLabel.setBackground(Color.red);
+		gameRoomInfoLabel.setForeground(Color.white);
+		gameRoomInfoLabel.setText("방 번호 : " + gameRoomNumber + "    " + "방 제목 : " + gameRoomName);
+		mainPanel.add(gameRoomInfoLabel);
+
 		/* 유저 프레임 설정 */
 		for (int index = 0; index < MAX_USERS; index++) {
 			UserFrame userFrame = new UserFrame(index);

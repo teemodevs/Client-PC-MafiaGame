@@ -34,7 +34,7 @@ public class LoginFrame extends JFrame {
      * 소켓 연결 성공 후 수행, LoginFrame을 띄움 
      */
     public void boot() {
-        this.floatLoginFrame();
+        this.appendMainPanel();
         this.appendIdTextField();
         this.appendPwTextField();
         this.appendLoginButton();
@@ -44,7 +44,7 @@ public class LoginFrame extends JFrame {
     /**
      * 로그인 창 띄움 
      */
-    private void floatLoginFrame() {
+    private void appendMainPanel() {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(300, 100, 380, 400);
@@ -107,8 +107,7 @@ public class LoginFrame extends JFrame {
         loginButton.setBorderPainted(false);
         contentPanel.add(loginButton);
 
-        LoginButtonAction action = new LoginButtonAction();
-        loginButton.addActionListener(action);
+        loginButton.addActionListener(new LoginButtonAction());
     }
 
     /**
